@@ -1,23 +1,23 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import "./App.css";
 import "./reset.css";
-import ArticlesPage from "./pages/HomePage/ArticlesPage";
+import "./App.css";
+import HomePage from "./pages/HomePage/HomePage";
 import ArticlePage from "./pages/article/ArticlePage";
 import PostPage from "./pages/post/PostPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import LoginPage from "./pages/login/LoginPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import styled from "styled-components";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className='App'>
+      <StyledApp>
         <Header />
-        {/* <ArticlesPage /> */}
         <Switch>
-          <Route path='/article/:id'>
+          <Route path='/article/:articleId'>
             <ArticlePage />
           </Route>
           <Route path='/profile'>
@@ -29,11 +29,19 @@ function App() {
           <Route path='/login'>
             <LoginPage />
           </Route>
+          <Route path='/'>
+            <HomePage />
+          </Route>
         </Switch>
         <Footer />
-      </div>
+      </StyledApp>
     </BrowserRouter>
   );
 }
+
+const StyledApp = styled.div`
+  /* width: 100%;
+  margin: 0 auto; */
+`;
 
 export default App;
