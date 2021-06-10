@@ -1,15 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import LogoImg from "../images/logo.svg";
+import { HamMenuIcon } from "../components/navigationIcons";
+import { getMemberInfo } from "../utils/firebase";
+import NavigationIconGroup from "./NavigationIconGroup";
+import MobileKanBansPage from "../pages/homePage/MobileKanBansPage";
 
 const Header = () => {
+  const [memberInfo, setMemberInfo] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    getMemberInfoToHeader();
+  }, []);
+
+  const getMemberInfoToHeader = (email) => {
+    getMemberInfo(({ email }) => {
+      setMemberInfo(email);
+    });
+  };
+
   return (
     <StyledHeader>
-      <StyledHeaderContainer>
+      {isOpen ? <MobileKanBansPage setIsOpen={setIsOpen} /> : ""}
+      <StyledHeaderContainer className='StyledHeaderContainer'>
+        <StyledHamMenuContainer
+          onClick={() => {
+            setIsOpen(true);
+          }}>
+          <HamMenuIcon />
+        </StyledHamMenuContainer>
         <StyledLogoAndSearchBar>
           <StyledLogoContainer>
             <StyledLogoLink to='/'>
@@ -25,11 +49,15 @@ const Header = () => {
             </StyledSearchBarContainer>
           </StyledSearchBar>
         </StyledLogoAndSearchBar>
-        <StyledLoginContainer>
-          <StyledLoginLink to='/login'>
-            <StyledLoginSpan>註冊 / 登入</StyledLoginSpan>
-          </StyledLoginLink>
-        </StyledLoginContainer>
+        {memberInfo ? (
+          <NavigationIconGroup />
+        ) : (
+          <StyledLoginContainer>
+            <StyledLoginLink to='/login'>
+              <StyledLoginSpan>註冊 / 登入</StyledLoginSpan>
+            </StyledLoginLink>
+          </StyledLoginContainer>
+        )}
       </StyledHeaderContainer>
     </StyledHeader>
   );
@@ -49,12 +77,25 @@ const StyledHeaderContainer = styled.div`
   margin: auto;
   padding: 0 36px;
 
+  @media screen and (max-width: 1024px) {
+    padding: 0 24px;
+  }
+
   @media screen and (max-width: 450px) {
     padding: 0 18px;
   }
 
   @media screen and (max-width: 375px) {
     padding: 0 9px;
+  }
+`;
+
+const StyledHamMenuContainer = styled.div`
+  display: none;
+  @media screen and (max-width: 1024px) {
+    display: flex;
+    margin-right: 24px;
+    cursor: pointer;
   }
 `;
 
@@ -66,6 +107,7 @@ const StyledLogoAndSearchBar = styled.div`
 
 const StyledLogoContainer = styled.div`
   height: 30px;
+  min-width: 70px;
 `;
 
 const StyledLogoLink = styled(Link)`
@@ -85,11 +127,15 @@ const StyledLogoImg = styled.img`
 const StyledSearchBar = styled.div`
   display: flex;
   width: 100%;
+
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 const StyledSearchBarContainer = styled.div`
   display: flex;
-  width: 40%;
+  width: 80%;
   min-width: 150px;
   height: 30px;
   margin: 0 32px;
@@ -99,7 +145,7 @@ const StyledSearchBarContainer = styled.div`
 
 const StyledSearchBarInput = styled.input`
   background-color: rgb(0, 88, 138);
-  width: 100%;
+  width: 80%;
   height: 100%;
   padding: 0px 8px;
   color: rgb(255, 255, 255);

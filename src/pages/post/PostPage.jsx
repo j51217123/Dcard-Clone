@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 import moment from "moment";
 
-// import Header from "../../components/Header";
-
 import { handleUpload, getMemberInfo, getKanBansData } from "../../utils/firebase";
+import { GirlIcon, BoyIcon, GenderDIcon } from "../../components/genderIcons";
+import UploadImgIcon from "../../components/uploadImgIcon";
+import KanBansModal from "../../utils/kanBansModal";
 
-const PostPage = () => {
+const PostPage = (props) => {
+  const history = useHistory();
   const time = moment().format("YYYY MMMM Do , h:mm a");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -15,7 +18,7 @@ const PostPage = () => {
   const [email, setEmail] = useState("");
   const [uid, setUid] = useState("");
   const [kanBans, setKanBan] = useState("");
-  const [selectKanBan, setSelectKanBan] = useState("");
+  const [selectedKanBan, setSelectedKanBan] = useState("");
 
   useEffect(() => {
     getMemberInfo(({ email, uid }) => {
@@ -40,11 +43,6 @@ const PostPage = () => {
     setTitle(e.target.value);
   };
 
-  const saveSelectKanBanToState = (e) => {
-    setSelectKanBan(e.target.value);
-    console.log(selectKanBan);
-  };
-
   const handleChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -56,68 +54,81 @@ const PostPage = () => {
 
   return (
     <StyledMain>
-      <StyledForm action=''>
-        <StyledFormHeader>發表文章</StyledFormHeader>
-        <StyledSelectKanBanContainer>
-          <select onChange={saveSelectKanBanToState}>
-            看板選擇
-            {kanBans &&
-              kanBans.map((kanBan) => {
-                console.log(kanBan);
-                return <option value={kanBan.name}>{kanBan.name}</option>;
-              })}
-          </select>
-        </StyledSelectKanBanContainer>
-        <StyledFormBody>
-          <StyledFormOwnerInfoContainer>
-            <img alt='' width='32px' height='32px' />
-            <StyledOwnerNameAndPostTimeContainer>
-              <div>姓名：{email}</div>
-              <div>時間：{time}</div>
-            </StyledOwnerNameAndPostTimeContainer>
-          </StyledFormOwnerInfoContainer>
-          <StyledFormTitleInput placeholder='title' onChange={savePostTitleToState} />
-          <StyledContentContainer>
-            <StyledTextarea placeholder='content' rows='8' cols='41' onChange={savePostContentToState}></StyledTextarea>
-            <StyledPreviewImgContainer>
-              <StyledUnloadPreviewImg
-                style={{ display: previewImgUrl ? "block" : "none" }}
-                src={previewImgUrl}
-                alt=''
-              />
-            </StyledPreviewImgContainer>
-          </StyledContentContainer>
-        </StyledFormBody>
-        <StyledFormFooter>
-          <button>
-            <input type='file' onChange={handleChange} multiple />
-          </button>
-          <StyledPostButton
-            disabled={title.length === 0 || content.length === 0 ? "disabled" : ""}
-            onClick={(e) => {
-              handleUpload(e, image, title, content, uid, email, selectKanBan, time);
-            }}>
-            送出
-          </StyledPostButton>
-        </StyledFormFooter>
-      </StyledForm>
+      <StyledMainContainer>
+        <StyledForm action=''>
+          <StyledFormHeader>
+            <StyledPostFeature>發表文章</StyledPostFeature>
+          </StyledFormHeader>
+          <StyledSelectKanBanOuterContainer className='StyledSelectKanBanContainer'>
+            <StyledSelectKanBanInnerContainer className='StyledKanBanDiv'>
+              <StyledKanBansDes className='StyledKanBansDes'>
+                <KanBansModal setSelectedKanBan={setSelectedKanBan}></KanBansModal>
+              </StyledKanBansDes>
+            </StyledSelectKanBanInnerContainer>
+          </StyledSelectKanBanOuterContainer>
+          <StyledFormBody>
+            <StyledFormOwnerInfoContainer>
+              <StyledGenderIconContainer>{<GenderDIcon />}</StyledGenderIconContainer>
+              <StyledOwnerNameAndPostTimeContainer>
+                <div>{email}</div>
+                <div>{time}</div>
+              </StyledOwnerNameAndPostTimeContainer>
+            </StyledFormOwnerInfoContainer>
+            <StyledFormTitleInput placeholder='標題' onChange={savePostTitleToState} />
+            <StyledContentContainer>
+              <StyledTextarea
+                placeholder='內容...'
+                rows='10'
+                cols='41'
+                onChange={savePostContentToState}></StyledTextarea>
+              <StyledPreviewImgContainer>
+                <StyledUnloadPreviewImg
+                  style={{ display: previewImgUrl ? "block" : "none" }}
+                  src={previewImgUrl}
+                  alt=''
+                />
+              </StyledPreviewImgContainer>
+            </StyledContentContainer>
+          </StyledFormBody>
+          <StyledFormFooter>
+            <StyledFormFooterContainer>
+              <StyledUploadImgButton>
+                <StyledUploadImgLabel htmlFor='uploadImgId'>
+                  <UploadImgIcon />
+                  <StyledUploadImgInput type='file' id='uploadImgId' onChange={handleChange} multiple />
+                </StyledUploadImgLabel>
+              </StyledUploadImgButton>
+              <StyledPostButton
+                disabled={title.length === 0 || content.length === 0 || selectedKanBan.length === 0 ? "disabled" : ""}
+                onClick={(e) => {
+                  handleUpload(e, image, title, content, uid, email, selectedKanBan, time, history);
+                }}>
+                發佈文章
+              </StyledPostButton>
+            </StyledFormFooterContainer>
+          </StyledFormFooter>
+        </StyledForm>
+      </StyledMainContainer>
     </StyledMain>
   );
 };
 
 const StyledMain = styled.div`
-  overflow: auto;
-  min-height: 100vh;
   width: 100%;
-  padding-top: 48px;
+  min-height: 100vh;
   background-color: rgb(255, 255, 255);
 `;
 
-const StyledForm = styled.div`
+const StyledMainContainer = styled.div`
+  max-width: 1280px;
+  margin: 0 auto;
+`;
+
+const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-width: 840px;
+  min-width: 100%;
   min-height: calc(100vh - 48px);
   padding: 20px 80px 0px;
 `;
@@ -137,13 +148,47 @@ const StyledFormHeader = styled.div`
   color: rgb(0, 0, 0);
 `;
 
-const StyledSelectKanBanContainer = styled.div`
+const StyledPostFeature = styled.div`
+  display: flex;
+  align-items: center;
+  height: 60px;
+  padding: 19px 17px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+`;
+
+const StyledSelectKanBanOuterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   max-width: 680px;
   margin: 20px auto;
+`;
+
+const StyledSelectKanBanInnerContainer = styled.div`
+  display: flex;
+  align-items: center;
+  height: 32px;
+  border-radius: 8px;
+  padding: 6px 4px 6px 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  background-color: rgba(0, 16, 32, 0.06);
+  color: rgba(0, 0, 0, 0.5);
+`;
+
+const StyledKanBansDes = styled.div`
+  margin-right: 4px;
+
+  div > button {
+    outline: none;
+    border: none;
+  }
 `;
 
 const StyledFormBody = styled.div`
@@ -154,6 +199,13 @@ const StyledFormBody = styled.div`
 
 const StyledFormOwnerInfoContainer = styled.div`
   display: flex;
+`;
+
+const StyledGenderIconContainer = styled.div`
+  svg {
+    width: 32px;
+    height: 32px;
+  }
 `;
 
 const StyledOwnerNameAndPostTimeContainer = styled.div`
@@ -170,6 +222,10 @@ const StyledFormTitleInput = styled.input`
   border: none;
   padding: 0px;
   outline: none;
+
+  ::placeholder {
+    color: rgba(0, 0, 0, 0.35);
+  }
 `;
 
 const StyledPreviewImgContainer = styled.div`
@@ -177,7 +233,9 @@ const StyledPreviewImgContainer = styled.div`
 `;
 
 const StyledUnloadPreviewImg = styled.img`
-  max-width: 180px;
+  display: block;
+  max-width: 100%;
+  max-height: 60vh;
 `;
 
 const StyledContentContainer = styled.div`
@@ -188,23 +246,65 @@ const StyledContentContainer = styled.div`
 const StyledTextarea = styled.textarea`
   display: flex;
   width: 100%;
+  height: 100%;
   max-width: 680px;
   margin: 16px auto;
   font-size: 18px;
   line-height: 1.6;
   border: none;
+  resize: none;
+  ::placeholder {
+    color: rgba(0, 0, 0, 0.35);
+  }
 `;
 
 const StyledFormFooter = styled.div`
+  position: fixed;
+  width: 100%;
+  left: 0px;
+  bottom: 0px;
+  background-color: rgb(255, 255, 255);
+`;
+
+const StyledFormFooterContainer = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
+  height: 100%;
   max-width: 680px;
-  margin: 0px auto;
+  margin: auto;
+`;
+
+const StyledUploadImgButton = styled.div`
+  outline: none;
+  background: none;
+  border: none;
+`;
+
+const StyledUploadImgLabel = styled.label`
+  cursor: pointer;
+  display: flex;
+  align-content: center;
+
+  svg {
+    fill: rgba(0, 0, 0, 0.5);
+  }
+`;
+
+const StyledUploadImgInput = styled.input`
+  display: none;
 `;
 
 const StyledPostButton = styled.button`
   padding: 0 8px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  height: 44px;
+  margin-bottom: 15px;
+  font-weight: 600;
 `;
 
 export default PostPage;

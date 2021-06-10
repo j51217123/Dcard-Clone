@@ -54,16 +54,17 @@ const getSingleUserData = (postsDocData) => {
   const db = firebase.firestore();
   const singleUserRef = db.collection("Users");
   let usersDocData = [];
-
+  console.log(postsDocData);
   return singleUserRef
     .where("uid", "==", postsDocData.uid)
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((userDoc) => {
         // doc.data() is never undefined for query doc snapshots
-        // console.log(userDoc.id, " => ", userDoc.data());
+        console.log(userDoc.id, " => ", userDoc.data());
         usersDocData.push(userDoc.data());
       });
+      console.log(usersDocData[0]);
       return usersDocData[0];
     })
     .catch((error) => {
@@ -112,7 +113,7 @@ const getKanBansData = () => {
   });
 };
 
-const handleUpload = (e, image, title, content, uid, email, selectKanBan, time) => {
+const handleUpload = (e, image, title, content, uid, email, selectedKanBan, time, history) => {
   const storage = firebase.storage();
   if (image) {
     e.preventDefault();
@@ -132,17 +133,17 @@ const handleUpload = (e, image, title, content, uid, email, selectKanBan, time) 
           .getDownloadURL()
           .then((url) => {
             console.log(url);
-            pushPost(title, content, uid, email, selectKanBan, time, url);
+            pushPost(title, content, uid, email, selectedKanBan, time, history, url);
           });
       }
     );
   } else {
     e.preventDefault();
-    pushPost(title, content, uid, email, selectKanBan, time);
+    pushPost(title, content, uid, email, selectedKanBan, time, history);
   }
 };
 
-const handlePostComment = (e, image, articleId, content, email, Link) => {
+const handlePostComment = (e, image, articleId, content, email) => {
   const storage = firebase.storage();
   if (image) {
     e.preventDefault();
@@ -157,14 +158,14 @@ const handlePostComment = (e, image, articleId, content, email, Link) => {
           .getDownloadURL()
           .then((url) => {
             console.log(url);
-            return pushComment(articleId, content, email, Link, url).then((comment) => {
+            return pushComment(articleId, content, email, url).then((comment) => {
               return comment;
             });
           });
       });
   } else {
     e.preventDefault();
-    return pushComment(articleId, content, email, Link).then((comment) => {
+    return pushComment(articleId, content, email).then((comment) => {
       return comment;
     });
   }
@@ -194,7 +195,7 @@ const handleUploadPostEmotionCount = async (articleId, email, Params) => {
 
   switch (Params) {
     case "like":
-      postRef
+      return postRef
         .update({
           emotion: existedLike.includes(email)
             ? {
@@ -210,6 +211,9 @@ const handleUploadPostEmotionCount = async (articleId, email, Params) => {
         })
         .then(() => {
           console.log("Document successfully updated!");
+          const likeLen = existedLike.includes(email) ? isLikeEmails.length : [...existedLike, email].length;
+          const emotionLen = likeLen + isHappyEmails.length + isAngryEmails.length;
+          return emotionLen;
         })
         .catch((error) => {
           console.log("Error :", error);
@@ -217,7 +221,7 @@ const handleUploadPostEmotionCount = async (articleId, email, Params) => {
       break;
 
     case "happy":
-      postRef
+      return postRef
         .update({
           emotion: existedHappy.includes(email)
             ? {
@@ -233,6 +237,9 @@ const handleUploadPostEmotionCount = async (articleId, email, Params) => {
         })
         .then(() => {
           console.log("Document successfully updated!");
+          const happyLen = existedHappy.includes(email) ? isHappyEmails.length : [...existedHappy, email].length;
+          const emotionLen = happyLen + isLikeEmails.length + isAngryEmails.length;
+          return emotionLen;
         })
         .catch((error) => {
           console.log("Error :", error);
@@ -240,7 +247,7 @@ const handleUploadPostEmotionCount = async (articleId, email, Params) => {
       break;
 
     case "angry":
-      postRef
+      return postRef
         .update({
           emotion: existedAngry.includes(email)
             ? {
@@ -256,6 +263,9 @@ const handleUploadPostEmotionCount = async (articleId, email, Params) => {
         })
         .then(() => {
           console.log("Document successfully updated!");
+          const angryLen = existedAngry.includes(email) ? isAngryEmails.length : [...existedAngry, email].length;
+          const emotionLen = angryLen + isLikeEmails.length + isHappyEmails.length;
+          return emotionLen;
         })
         .catch((error) => {
           console.log("Error :", error);
@@ -303,7 +313,7 @@ const handleUploadCommentEmotionCount = async (articleId, email, Params) => {
   }
 };
 
-const pushPost = (title, content, uid, email, selectKanBan, time, url = "") => {
+const pushPost = (title, content, uid, email, selectKanBan, time, history, url = "") => {
   const db = firebase.firestore();
   const postRef = db.collection("Posts");
 
@@ -315,15 +325,16 @@ const pushPost = (title, content, uid, email, selectKanBan, time, url = "") => {
       name: email,
       uid: uid,
       kanBan: selectKanBan,
-      postTime: time,
+      postTime: firebase.firestore.Timestamp.now(),
       emotion: {
-        like: [0],
-        angry: [0],
-        happy: [0],
+        like: [],
+        angry: [],
+        happy: [],
       },
     })
     .then((docRef) => {
       console.log("Document written with ID: ", docRef.id);
+      history.push("/");
     })
     .catch((error) => {
       console.error("Error adding document: ", error);
@@ -344,7 +355,7 @@ const pushComment = async (articleId, content, email, url = "") => {
     name: email,
     floor: 1, // index
     audio: url,
-    like: ["0"],
+    like: [],
   };
 
   if (!existedComment.comment) {
@@ -383,8 +394,8 @@ const registerMember = (e, email, password) => {
     .auth()
     .createUserWithEmailAndPassword(email, password)
     .then((result) => {
-      console.log(result.user, "result");
-      getMemberInfo(result.user);
+      console.log(result.user, "result.user");
+      // getMemberInfo(result.user);
     })
     .catch(function (error) {
       if (error.message === "The email address is badly formatted.") {
@@ -399,13 +410,14 @@ const registerMember = (e, email, password) => {
     });
 };
 
-const loginMember = (e, email, password) => {
+const loginMember = (e, email, password, history) => {
   e.preventDefault();
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
     .then((result) => {
       console.log(result);
+      history.push("/");
     })
     .catch((error) => {
       console.log(error);
@@ -437,8 +449,9 @@ const getMemberInfo = (callback) => {
       var uid = user.uid;
       console.log(email, uid);
 
-      saveMemberInfoToFireStore(email, uid);
+      saveMemberInfoToFireStore(email, uid); // 待修正
       callback({ email, uid });
+      // console.log(user);
     } else {
       // 使用者未登入
     }
@@ -449,11 +462,22 @@ const saveMemberInfoToFireStore = (email, uid) => {
   const db = firebase.firestore();
   const UsersRef = db.collection("Users").doc(uid);
 
-  UsersRef.set({
+  // const renderGenderIcons = () => {
+  //   const icons = ["boy", "girl", "dcard"];
+  //   const res = icons[Math.floor(Math.random() * 3)];
+  //   return res;
+  // };
+
+  // const renderGender = renderGenderIcons();
+
+  return UsersRef.set({
+    // 查 Ref
     email: email,
     uid: uid,
+    // gender: renderGender,
   }).then(() => {
     console.log("add data successful");
+    // return renderGender;
   });
 };
 
