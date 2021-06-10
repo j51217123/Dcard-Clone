@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { Link, useHistory } from "react-router-dom";
 
+import LazyImg from "../../images/lazy.svg";
 import { loginMember } from "../../utils/firebase";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const history = useHistory();
 
   const getRegisterAndLoginEmail = (e) => {
     setEmail(e.target.value);
@@ -20,47 +23,67 @@ const LoginPage = () => {
   return (
     <StyledMain>
       <StyledMainContainer>
-        <StyledLoginButtonGroup>
-          <StyledFacebookLoginButton>
-            <StyledFacebookButtonContainer>
-              <img src='' alt='' />
-              Facebook 註冊 / 登入
-            </StyledFacebookButtonContainer>
-          </StyledFacebookLoginButton>
-          <StyledGoogleLoginButton>
-            <StyledGoogleLoginButtonContainer>
-              <img src='' alt='' />
-              Google 註冊 / 登入
-            </StyledGoogleLoginButtonContainer>
-          </StyledGoogleLoginButton>
-        </StyledLoginButtonGroup>
-        <StyledDemarcation>或</StyledDemarcation>
-        <StyledLoginForm action=''>
-          <StyledLoginEmail>
-            <StyledLoginEmailContainer>
-              <StyledLoginLabel>常用信箱</StyledLoginLabel>
-              <StyledLoginInput
-                placeholder='輸入信箱'
-                onChange={(e) => {
-                  getRegisterAndLoginEmail(e);
-                }}></StyledLoginInput>
-            </StyledLoginEmailContainer>
-          </StyledLoginEmail>
-          <StyledLoginPassWordContainer>
-            <StyledLoginLabel>密碼</StyledLoginLabel>
-            <StyledLoginInput
-              placeholder='輸入密碼'
-              onChange={(e) => {
-                getRegisterAndLoginPassword(e);
-              }}></StyledLoginInput>
-          </StyledLoginPassWordContainer>
-          <StyledLoginButton
-            onClick={(e) => {
-              loginMember(e, email, password);
-            }}>
-            <StyledLoginButtonText>註冊 / 登入</StyledLoginButtonText>
-          </StyledLoginButton>
-        </StyledLoginForm>
+        <StyledLazyContainer>
+          <StyledLazyImg src={LazyImg} alt='' />
+          <StyledLazyTitle>年輕人都在 Dcard 上討論</StyledLazyTitle>
+          <StyledLazyInfo>
+            不想錯過任何有趣的話題嗎？
+            <br />
+            趕快加入我們吧！
+          </StyledLazyInfo>
+          <StyledLazyLink to='/'>
+            <StyledLazyButton>
+              <StyledLazyDescription>先看討論區</StyledLazyDescription>
+            </StyledLazyButton>
+          </StyledLazyLink>
+        </StyledLazyContainer>
+        <StyledLoginFormContainer>
+          <StyledLoginButtonGroup>
+            <StyledFacebookLoginButton>
+              <StyledFacebookButtonContainer>
+                <img src='' alt='' />
+                Facebook 註冊 / 登入
+              </StyledFacebookButtonContainer>
+            </StyledFacebookLoginButton>
+            <StyledGoogleLoginButton>
+              <StyledGoogleLoginButtonContainer>
+                <img src='' alt='' />
+                Google 註冊 / 登入
+              </StyledGoogleLoginButtonContainer>
+            </StyledGoogleLoginButton>
+          </StyledLoginButtonGroup>
+          <StyledDemarcation>或</StyledDemarcation>
+          <StyledLoginForm action=''>
+            <StyledLoginEmail>
+              <StyledLoginEmailContainer>
+                <StyledLoginLabel>常用信箱</StyledLoginLabel>
+                <StyledLoginInput
+                  placeholder='輸入信箱 / aaa@test.com'
+                  type='email'
+                  onChange={(e) => {
+                    getRegisterAndLoginEmail(e);
+                  }}></StyledLoginInput>
+              </StyledLoginEmailContainer>
+            </StyledLoginEmail>
+            <StyledLoginPassWordContainer>
+              <StyledLoginLabel>密碼</StyledLoginLabel>
+              <div>
+                <StyledLoginInput
+                  placeholder='輸入密碼 / 123456'
+                  type='password'
+                  onChange={(e) => {
+                    getRegisterAndLoginPassword(e);
+                  }}></StyledLoginInput>
+              </div>
+            </StyledLoginPassWordContainer>
+            <StyledLoginButton
+              onClick={(e) => {
+                loginMember(e, email, password, history);
+              }}>
+              <StyledLoginButtonText>註冊 / 登入</StyledLoginButtonText>
+            </StyledLoginButton>
+          </StyledLoginForm>
+        </StyledLoginFormContainer>
       </StyledMainContainer>
     </StyledMain>
   );
@@ -69,15 +92,88 @@ const LoginPage = () => {
 const StyledMain = styled.div`
   height: 100vh;
   width: 100%;
-  padding-top: 48px;
   background-color: #00324e;
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 `;
 
 const StyledMainContainer = styled.div`
   width: 100%;
+  max-width: 1140px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 50px 0px;
+
+  @media screen and (max-width: 1024px) {
+    padding: 50px 30px;
+  }
+`;
+
+const StyledLazyContainer = styled.div`
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
+`;
+
+const StyledLazyImg = styled.img`
+  display: block;
+  max-width: 100%;
+  max-height: 60vh;
+  height: 250px;
+  margin: auto;
+  cursor: zoom-in;
+  object-fit: cover;
+`;
+
+const StyledLazyTitle = styled.h1`
+  color: rgb(255, 255, 255);
+  font-size: 32px;
+  line-height: 45px;
+  margin-top: 0.67em;
+`;
+
+const StyledLazyInfo = styled.p`
+  margin: 0px 0px 20px;
+  color: rgb(255, 255, 255);
+  font-size: 24px;
+  line-height: 36px;
+  opacity: 0.6;
+  text-align: center;
+`;
+
+const StyledLazyLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3397cf;
+`;
+
+const StyledLazyButton = styled.button`
+  outline: none;
+  user-select: none;
+  border: none;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.25;
+  background: none;
+  color: #3397cf;
+`;
+
+const StyledLazyDescription = styled.div`
+  min-height: 18px;
+  font-size: 16px;
+  text-align: center;
+  opacity: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`;
+
+const StyledLoginFormContainer = styled.div`
+  width: 100%;
   max-width: 522px;
+  border-radius: 4px;
   margin: auto;
   padding: 60px 60px;
   background-color: rgb(255, 255, 255);
@@ -107,7 +203,7 @@ const StyledFacebookButtonContainer = styled.div`
   text-align: center;
   padding: 12px;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 22px;
 `;
 
@@ -190,18 +286,25 @@ const StyledLoginInput = styled.input`
 `;
 
 const StyledLoginButton = styled.button`
+  transform: translateX(-2px);
   width: calc(100% + 4px);
   margin-top: 20px;
-  background: rgba(0, 0, 0, 0.5);
   color: rgb(255, 255, 255);
+  cursor: pointer;
   line-height: 22px;
   border-radius: 10px;
   padding: 10px;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 22px;
   outline: none;
   border: none;
+  background-color: #3397cf;
+
+  :hover {
+    background-color: #5ab0db;
+    color: rgb(255, 255, 255);
+  }
 `;
 
 const StyledLoginButtonText = styled.div`
