@@ -7,4 +7,3 @@ const TickIcon = () => {
 };
 
 export default TickIcon;
-// aria-hidden='true'

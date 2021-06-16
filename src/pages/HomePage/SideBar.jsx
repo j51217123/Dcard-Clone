@@ -73,6 +73,10 @@ const StyledSideBarLink = styled(Link)`
   color: rgb(255, 255, 255);
   height: 44px;
   padding: 0px 10px 0px 20px;
+
+  :hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const StyledSideBarLogo = styled.div`
