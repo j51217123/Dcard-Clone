@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import { SearchIcon, PostIcon, FriendIcon, EMailBoxIcon, ProfileIcon, LogOutIcon } from "./navigationIcons";
-import { logoutMember } from "../utils/firebase";
+import { SearchIcon, PostIcon, FriendIcon, EMailBoxIcon, ProfileIcon, LogOutIcon } from "../icons/NavigationIcons";
+import { logoutMember } from "../../utils/firebase";
 
 const NavigationIconGroup = () => {
   return (
@@ -19,17 +19,17 @@ const NavigationIconGroup = () => {
             <PostIcon />
           </StyledNavigationIconImgContainer>
         </Link>
-        <Link>
+        <Link to='/'>
           <StyledNavigationIconImgContainer fill cursor>
             <FriendIcon />
           </StyledNavigationIconImgContainer>
         </Link>
-        <Link>
+        <Link to='/'>
           <StyledNavigationIconImgContainer fill cursor>
             <EMailBoxIcon />
           </StyledNavigationIconImgContainer>
         </Link>
-        <Link>
+        <Link to='/'>
           <StyledNavigationIconImgContainer fill cursor>
             <ProfileIcon />
           </StyledNavigationIconImgContainer>

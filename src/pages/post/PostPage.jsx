@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 
-import { handleUpload, getMemberInfo, getKanBansData } from "../../utils/firebase";
-import { GirlIcon, BoyIcon, GenderDIcon } from "../../components/genderIcons";
-import UploadImgIcon from "../../components/uploadImgIcon";
-import KanBansModal from "../../utils/kanBansModal";
+import { handleUpload, getMemberInfo } from "../../utils/firebase"; // delete getKanBansData
+import { GenderDIcon } from "../../components/icons/GenderIcons";
+import UploadImgIcon from "../../components/icons/UploadImgIcon";
+import KanBansModal from "../../components/modals/KanBansModal";
 
 const PostPage = (props) => {
   const history = useHistory();
@@ -17,26 +17,30 @@ const PostPage = (props) => {
   const [previewImgUrl, setPreviewImgUrl] = useState("");
   const [email, setEmail] = useState("");
   const [uid, setUid] = useState("");
-  const [kanBans, setKanBan] = useState("");
+  // const [kanBans, setKanBan] = useState("");
   const [selectedKanBan, setSelectedKanBan] = useState("");
 
   useEffect(() => {
-    getMemberInfo(({ email, uid }) => {
+    const unsubscribe = getMemberInfo(({ email, uid }) => {
       setEmail(email);
       setUid(uid);
     });
-    getKanBansDataToPostPage();
+    // getKanBansDataToPostPage();
+    return () => {
+      unsubscribe();
+      console.log("hi");
+    };
   }, []);
 
-  const getKanBansDataToPostPage = async () => {
-    const getFireStoreKanBansData = await getKanBansData();
-    console.log(getFireStoreKanBansData);
-    setKanBan(getFireStoreKanBansData);
-  };
+  // const getKanBansDataToPostPage = async () => {
+  //   const getFireStoreKanBansData = await getKanBansData();
+  //   console.log(getFireStoreKanBansData);
+  //   setKanBan(getFireStoreKanBansData);
+  // };
 
   const savePostContentToState = (e) => {
     setContent(e.target.value);
-    console.log(content);
+    // console.log(content);
   };
 
   const savePostTitleToState = (e) => {
@@ -48,7 +52,7 @@ const PostPage = (props) => {
       setImage(e.target.files[0]);
     }
     const objURL = URL.createObjectURL(e.target.files[0]);
-    console.log(objURL);
+    // console.log(objURL);
     setPreviewImgUrl(objURL);
   };
 
@@ -59,9 +63,9 @@ const PostPage = (props) => {
           <StyledFormHeader>
             <StyledPostFeature>發表文章</StyledPostFeature>
           </StyledFormHeader>
-          <StyledSelectKanBanOuterContainer className='StyledSelectKanBanContainer'>
-            <StyledSelectKanBanInnerContainer className='StyledKanBanDiv'>
-              <StyledKanBansDes className='StyledKanBansDes'>
+          <StyledSelectKanBanOuterContainer>
+            <StyledSelectKanBanInnerContainer>
+              <StyledKanBansDes>
                 <KanBansModal setSelectedKanBan={setSelectedKanBan}></KanBansModal>
               </StyledKanBansDes>
             </StyledSelectKanBanInnerContainer>
@@ -272,8 +276,9 @@ const StyledFormFooterContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 100%;
+  padding: 0px 24px;
   max-width: 680px;
-  margin: auto;
+  margin: 20px auto auto auto;
 `;
 
 const StyledUploadImgButton = styled.div`

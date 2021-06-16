@@ -4,18 +4,21 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-import LogoImg from "../images/logo.svg";
-import { HamMenuIcon } from "../components/navigationIcons";
-import { getMemberInfo } from "../utils/firebase";
-import NavigationIconGroup from "./NavigationIconGroup";
-import MobileKanBansPage from "../pages/homePage/MobileKanBansPage";
+import OcardImg from "../../images/Ocard.svg";
+import { HamMenuIcon } from "../icons/NavigationIcons";
+import { getMemberInfo } from "../../utils/firebase";
+import NavigationIconGroup from "../common/NavigationIconGroup";
+import MobileKanBansPage from "../../pages/homePage/MobileKanBansPage";
 
 const Header = () => {
   const [memberInfo, setMemberInfo] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    getMemberInfoToHeader();
+    const unsubscribe = getMemberInfoToHeader();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const getMemberInfoToHeader = (email) => {
@@ -37,7 +40,7 @@ const Header = () => {
         <StyledLogoAndSearchBar>
           <StyledLogoContainer>
             <StyledLogoLink to='/'>
-              <StyledLogoImg src={LogoImg} alt='Dcard' />
+              <StyledLogoImg src={OcardImg} alt='Ocard' />
             </StyledLogoLink>
           </StyledLogoContainer>
           <StyledSearchBar>
@@ -75,7 +78,7 @@ const StyledHeaderContainer = styled.div`
   display: flex;
   align-items: center;
   margin: auto;
-  padding: 0 36px;
+  padding: 0 20px 0 48px;
 
   @media screen and (max-width: 1024px) {
     padding: 0 24px;
@@ -161,9 +164,10 @@ const StyledSearchBarInput = styled.input`
 const StyledSearchBarButton = styled.button`
   background-color: rgb(0, 106, 166);
   display: flex;
-  padding: 0 9px;
+  padding: 0 12px;
   color: rgb(255, 255, 255);
   border: 1px solid rgb(0, 88, 138);
+  border-radius: 0 4px 4px 0;
   outline: none;
   align-items: center;
   cursor: pointer;

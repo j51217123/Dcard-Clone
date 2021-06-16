@@ -2,19 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import EmotionButtonGroup from "../../components/EmotionButtonGroup";
-import { GirlIcon, BoyIcon, GenderDIcon } from "../../components/genderIcons";
-import {
-  getSinglePostData,
-  getSingleUserData,
-  handlePostComment,
-  getMemberInfo,
-  handleUploadCommentEmotionCount,
-} from "../../utils/firebase";
-import ModalCloseButtonIcon from "../../components/closeButtonIcon";
-import UploadImgIcon from "../../components/uploadImgIcon";
-
-import { CommentLikeIcon } from "../../components/commentIcon";
+import EmotionButtonGroup from "../../components/common/EmotionButtonGroup";
+import { GirlIcon, BoyIcon, GenderDIcon } from "../../components/icons/GenderIcons";
+import { getSinglePostData, getSingleUserData, handlePostComment, getMemberInfo } from "../../utils/firebase";
+import ModalCloseButtonIcon from "../../components/icons/CloseButtonIcon";
+import UploadImgIcon from "../../components/icons/UploadImgIcon";
+import ArticleComment from "./ArticleComment";
 
 const ArticlePage = (props) => {
   const { modalClose } = props;
@@ -30,10 +23,7 @@ const ArticlePage = (props) => {
   useEffect(() => {
     getSinglePostData(articleId).then((postsDocData) => {
       setPostData(postsDocData);
-      console.log(postsDocData);
-
       getSingleUserData(postsDocData).then((usersDocData) => {
-        console.log(usersDocData, "usersDocData");
         setUserData(usersDocData);
       });
     });
@@ -41,7 +31,7 @@ const ArticlePage = (props) => {
       console.log(email);
       setEmail(email);
     });
-  }, []);
+  }, [articleId]);
 
   useEffect(() => {}, [userData]);
 
@@ -68,8 +58,6 @@ const ArticlePage = (props) => {
   if (postData === "" || userData === "") {
     return null;
   } else {
-    console.log(postData, "postsData");
-    console.log(userData, "userData");
     return (
       <>
         {
@@ -115,12 +103,7 @@ const ArticlePage = (props) => {
                       articleId={articleId}
                       email={email}
                       setEmotionCount={setEmotionCount}></EmotionButtonGroup>
-                    <StyledArticleEmotionsNum>
-                      {/* {Number(postData.emotion.angry.length) +
-                        Number(postData.emotion.happy.length) +
-                        Number(postData.emotion.like.length)} */}
-                      {emotionCount}
-                    </StyledArticleEmotionsNum>
+                    <StyledArticleEmotionsNum>{emotionCount}</StyledArticleEmotionsNum>
                     <StyledArticleCommentsNum>
                       ・回應 {postData.comment ? postData.comment.length : 0}
                     </StyledArticleCommentsNum>
@@ -138,45 +121,7 @@ const ArticlePage = (props) => {
                   postData.comment.map((comment) => {
                     return (
                       <>
-                        <StyledSingleComment>
-                          <StyledSingleCommentContainer>
-                            <StyledSingleCommentHeader>
-                              <StyledSingleCommentImgContainer>
-                                <BoyIcon />
-                              </StyledSingleCommentImgContainer>
-                              <StyledSingleCommentDetailContainer className='StyledSingleCommentDetailContainer'>
-                                <StyledSingleCommenter>{comment.name}</StyledSingleCommenter>
-                                <StyledSingleCommentFloorAndTimeContainer className='StyledSingleCommentFloorAndTimeContainer'>
-                                  <StyledSingleCommentFloorAndTimeContainer className='StyledSingleCommentFloorAndTimeContainer'>
-                                    B{comment.floor}・{new Date(comment.commentTime.seconds * 1000).toLocaleString()}
-                                  </StyledSingleCommentFloorAndTimeContainer>
-                                </StyledSingleCommentFloorAndTimeContainer>
-                              </StyledSingleCommentDetailContainer>
-                              <StyledCommentLikeButton
-                                onClick={(e) => {
-                                  handleUploadCommentEmotionCount(articleId, email, "like");
-                                }}>
-                                <StyledCommentLikeIconContainer>
-                                  <CommentLikeIcon />
-                                  {/* {Number(comment.like.length) === 1 ? 0 : comment.like.length} */}
-                                  {Number(comment.like.length)}
-                                </StyledCommentLikeIconContainer>
-                              </StyledCommentLikeButton>
-                            </StyledSingleCommentHeader>
-                            <StyledSingleCommentBody>
-                              <StyledSingleCommentBodyContainer>
-                                <StyledSingleCommentBodyContent>{comment.content}</StyledSingleCommentBodyContent>
-                              </StyledSingleCommentBodyContainer>
-                              <StyledUnloadPreviewImgContainer>
-                                <StyledUnloadPreviewImg
-                                  style={{ display: comment.audio ? "block" : "none" }}
-                                  src={comment.audio}
-                                  alt=''
-                                />
-                              </StyledUnloadPreviewImgContainer>
-                            </StyledSingleCommentBody>
-                          </StyledSingleCommentContainer>
-                        </StyledSingleComment>
+                        <ArticleComment comment={comment} articleId={articleId} email={email} />
                       </>
                     );
                   })}
@@ -398,121 +343,6 @@ const StyledArticleCommentContainer = styled.div`
   padding: 40px 0px;
 `;
 
-const StyledSingleComment = styled.div`
-  padding: 0px 60px;
-`;
-
-const StyledSingleCommentContainer = styled.div`
-  color: rgba(0, 0, 0, 0.85);
-  font-size: 18px;
-  padding: 16px 0px;
-  border-bottom: 1px solid rgb(233, 233, 233);
-`;
-
-const StyledSingleCommentHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const StyledSingleCommentImgContainer = styled.label`
-  display: flex;
-  margin-right: 8px;
-  align-items: center;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  color: rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  user-select: none;
-
-  svg {
-    width: 32px;
-    height: 32px;
-  }
-`;
-
-const StyledSingleCommentDetailContainer = styled.div`
-  display: flex;
-  min-width: 155px;
-  align-items: flex-start;
-  flex-grow: 1;
-  flex-direction: column;
-  font-weight: 500;
-  font-size: 12px;
-  color: rgba(0, 0, 0, 0.5);
-  margin-top: -1px;
-`;
-
-const StyledCommentLikeButton = styled.button`
-  outline: none;
-  background: none;
-  border: none;
-`;
-
-const StyledSingleCommenter = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  color: rgb(0, 0, 0);
-`;
-
-const StyledSingleCommentFloorAndTimeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 17px;
-  color: rgba(0, 0, 0, 0.5);
-`;
-
-const StyledCommentLikeIconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  color: rgba(0, 0, 0, 0.5);
-
-  svg {
-    width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    fill: rgba(0, 0, 0, 0.2);
-  }
-`;
-
-const StyledSingleCommentBody = styled.div`
-  padding-top: 20px;
-  word-break: break-all;
-  font-weight: 400;
-  font-size: 16px;
-  color: rgba(0, 0, 0, 0.75);
-  line-height: 28px;
-`;
-
-const StyledSingleCommentBodyContainer = styled.div`
-  white-space: break-spaces;
-  word-break: break-word;
-`;
-
-const StyledSingleCommentBodyContent = styled.span``;
-
-const StyledUnloadPreviewImgContainer = styled.div`
-  margin: 20px 0px;
-  display: inline-block;
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 60vh;
-  cursor: zoom-in;
-  img {
-    width: auto;
-    height: auto;
-    max-width: 100%;
-    max-height: var(--max-height);
-  }
-`;
-
 const StyledPostName = styled.div`
   font-weight: 600;
   display: flex;
@@ -526,7 +356,7 @@ const StyledArticleImgContainer = styled.div`
   max-height: 60vh;
   display: inline-block;
   width: auto;
-  height: var(--height);
+  height: 60vh;
   max-width: 100%;
   max-height: var(--max-height);
   cursor: zoom-in;
@@ -543,6 +373,7 @@ const StyledForm = styled.form``;
 
 const StyledPreviewImgContainer = styled.div`
   display: flex;
+  margin: auto;
 `;
 
 const StyledUnloadPreviewImg = styled.img`

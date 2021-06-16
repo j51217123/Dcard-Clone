@@ -8,8 +8,8 @@ import Fade from "@material-ui/core/Fade";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
-import { getKanBansData } from "./firebase";
-import TickIcon from "../components/tickIcon";
+import { getKanBansData } from "../../utils/firebase";
+import TickIcon from "../icons/TickIcon";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -84,7 +84,7 @@ export default function KanBansModal(props) {
               <StyledKanBansModalHeader>
                 <StyledKanBansModalHeaderTitleContainer>
                   <StyledKanBansModalHeaderTitle className='StyledKanBansModalHeaderTitle'>
-                    請選擇看板
+                    選擇發文看板
                   </StyledKanBansModalHeaderTitle>
                 </StyledKanBansModalHeaderTitleContainer>
               </StyledKanBansModalHeader>
@@ -97,6 +97,16 @@ export default function KanBansModal(props) {
                       return (
                         <>
                           <StyledKanBansOption
+                            style={
+                              ({
+                                color:
+                                  kanBan.name === SelectedModalKanBan ? "rgb(51, 151, 207)" : " rgba(0, 0, 0, 0.75)",
+                              },
+                              {
+                                background:
+                                  kanBan.name === SelectedModalKanBan ? "rgb(242, 243, 244)" : "rgb(255,255,255)",
+                              })
+                            }
                             onClick={(e) => {
                               saveSelectKanBanToState(e);
                               handleClose();
@@ -187,9 +197,10 @@ const StyledKanBansOption = styled.div`
   align-items: center;
   color: rgba(0, 0, 0, 0.75);
   cursor: pointer;
+  background: rgb(255, 255, 255);
 
   :hover {
-    background: rgb(242, 243, 244);
+    background: rgb(242, 243, 244) !important;
   }
 `;
 

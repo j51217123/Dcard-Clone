@@ -43,8 +43,8 @@ const getPostsData = () => {
       // doc.data() is never undefined for query doc snapshots
       // console.log(postsDoc.id, " => ", postsDoc.data());
       postsDocData.push({ ...postsDoc.data(), articleId: postsDoc.id });
-      console.log(postsDoc.id); //  文章 ID
-      console.log(postsDocData);
+      // console.log(postsDoc.id);  文章 ID
+      // console.log(postsDocData);
     });
     return postsDocData;
   });
@@ -64,7 +64,6 @@ const getSingleUserData = (postsDocData) => {
         console.log(userDoc.id, " => ", userDoc.data());
         usersDocData.push(userDoc.data());
       });
-      console.log(usersDocData[0]);
       return usersDocData[0];
     })
     .catch((error) => {
@@ -108,7 +107,7 @@ const getKanBansData = () => {
       // console.log(doc.id, " => ", doc.data());
       kanBansData.push(kanBansDoc.data());
     });
-    console.log(kanBansData);
+    // console.log(kanBansData);
     return kanBansData;
   });
 };
@@ -218,7 +217,6 @@ const handleUploadPostEmotionCount = async (articleId, email, Params) => {
         .catch((error) => {
           console.log("Error :", error);
         });
-      break;
 
     case "happy":
       return postRef
@@ -244,7 +242,6 @@ const handleUploadPostEmotionCount = async (articleId, email, Params) => {
         .catch((error) => {
           console.log("Error :", error);
         });
-      break;
 
     case "angry":
       return postRef
@@ -270,47 +267,48 @@ const handleUploadPostEmotionCount = async (articleId, email, Params) => {
         .catch((error) => {
           console.log("Error :", error);
         });
+
+    default:
+      // no default;
       break;
   }
 };
 
 // refactor
-const handleUploadCommentEmotionCount = async (articleId, email, Params) => {
+const handleUploadCommentEmotionCount = async (articleId, email, commentFloor) => {
   const db = firebase.firestore();
   const postRef = db.collection("Posts").doc(articleId);
   const postData = await getSinglePostData(articleId);
 
-  const existedLike = postData.emotion.like;
-
-  postData.comment.map((comment) => {
-    console.log(comment.floor, "commentFloor");
-    console.log(comment, "comment");
+  const selectedCommentFloorInfo = postData.comment.filter((c) => {
+    return c.floor === commentFloor;
   });
 
-  const isLikeEmails = existedLike.filter((mail) => {
-    return mail !== email;
+  const existedCommentLikes = postData.comment[commentFloor - 1].like;
+
+  const newCommentArr = [...postData.comment]; // 複製新的一個 comment array   **危險的淺拷貝
+
+  const isLikeEmails = existedCommentLikes.filter((mail) => {
+    return mail !== email; //  要確定 comment 的 like 有沒有這個 email
   });
 
-  switch (Params) {
-    case "like":
-      postRef
-        .update({
-          comment: existedLike.includes(email)
-            ? {
-                like: isLikeEmails,
-              }
-            : {
-                like: [...existedLike, email],
-              },
-        })
-        .then(() => {
-          console.log("Document successfully updated!");
-        })
-        .catch((error) => {
-          console.log("Error :", error);
-        });
-      break;
-  }
+  newCommentArr[commentFloor - 1].like = existedCommentLikes.includes(email) ? isLikeEmails : [...isLikeEmails, email]; // 加新的email
+
+  return postRef
+    .update({
+      comment: newCommentArr,
+    })
+    .then(() => {
+      console.log("Document successfully updated!");
+      const likeLen = existedCommentLikes.includes(email) ? isLikeEmails.length : [...isLikeEmails, email].length;
+      console.log(likeLen, "likeLen 304");
+      const currentFloorCommentInfo = { selectedCommentFloorInfo, likeLen };
+      console.log(currentFloorCommentInfo);
+      return currentFloorCommentInfo;
+    })
+    .catch((error) => {
+      console.log("Error :", error);
+    });
 };
 
 const pushPost = (title, content, uid, email, selectKanBan, time, history, url = "") => {
@@ -388,14 +386,14 @@ const pushComment = async (articleId, content, email, url = "") => {
   }
 };
 
-const registerMember = (e, email, password) => {
-  e.preventDefault();
+const registerMember = (email, password, history) => {
   firebase
     .auth()
     .createUserWithEmailAndPassword(email, password)
     .then((result) => {
       console.log(result.user, "result.user");
       // getMemberInfo(result.user);
+      history.push("/");
     })
     .catch(function (error) {
       if (error.message === "The email address is badly formatted.") {
@@ -410,8 +408,7 @@ const registerMember = (e, email, password) => {
     });
 };
 
-const loginMember = (e, email, password, history) => {
-  e.preventDefault();
+const loginMember = (email, password, history) => {
   firebase
     .auth()
     .signInWithEmailAndPassword(email, password)
@@ -422,7 +419,7 @@ const loginMember = (e, email, password, history) => {
     .catch((error) => {
       console.log(error);
       if (error.a === null) {
-        registerMember(e, email, password);
+        registerMember(email, password, history);
       }
     });
 };
@@ -449,9 +446,8 @@ const getMemberInfo = (callback) => {
       var uid = user.uid;
       console.log(email, uid);
 
-      saveMemberInfoToFireStore(email, uid); // 待修正
+      saveMemberInfoToFireStore(email, uid);
       callback({ email, uid });
-      // console.log(user);
     } else {
       // 使用者未登入
     }
@@ -462,22 +458,11 @@ const saveMemberInfoToFireStore = (email, uid) => {
   const db = firebase.firestore();
   const UsersRef = db.collection("Users").doc(uid);
 
-  // const renderGenderIcons = () => {
-  //   const icons = ["boy", "girl", "dcard"];
-  //   const res = icons[Math.floor(Math.random() * 3)];
-  //   return res;
-  // };
-
-  // const renderGender = renderGenderIcons();
-
   return UsersRef.set({
-    // 查 Ref
     email: email,
     uid: uid,
-    // gender: renderGender,
   }).then(() => {
-    console.log("add data successful");
-    // return renderGender;
+    console.log("add data successful for saveMemberInfoToFireStore");
   });
 };
 

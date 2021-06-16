@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 import { getPostsData, getKanBansData } from "../../utils/firebase";
-import { GirlIcon, BoyIcon, GenderDIcon } from "../../components/genderIcons";
-import { CommentIcon } from "../../components/commentIcon";
+import { GirlIcon, BoyIcon, GenderDIcon } from "../../components/icons/GenderIcons";
+import { CommentIcon } from "../../components/icons/CommentIcons";
 import EmotionButtonGroup from "../../components/EmotionButtonGroup";
+import DropDownMenu from "../../components/common/DropDownMenu";
 import SideBar from "../homePage/SideBar";
 import BannerImg from "../../images/banner.png";
 
@@ -16,6 +17,8 @@ const ArticlesPage = () => {
   let location = useLocation();
   const [postsData, setPostsData] = useState([]);
   const [kanBansData, setKanBansData] = useState("");
+  const [postsSort, setPostsSort] = useState("");
+  const [isMenuItemClick, setMenuItemClick] = useState("");
 
   useEffect(() => {
     getPostsDataToHomePage();
@@ -25,13 +28,12 @@ const ArticlesPage = () => {
 
   const getPostsDataToHomePage = async () => {
     const getFireStorePostsData = await getPostsData();
-    console.log(getFireStorePostsData);
     setPostsData(getFireStorePostsData);
   };
 
   const getKanBansDataToHomePage = async () => {
     const getFireStoreKanBansData = await getKanBansData();
-    console.log(getFireStoreKanBansData);
+    // console.log(getFireStoreKanBansData);
     setKanBansData(getFireStoreKanBansData);
   };
 
@@ -39,26 +41,36 @@ const ArticlesPage = () => {
     const icons = [<GirlIcon />, <BoyIcon />, <GenderDIcon />];
     const res = icons[Math.floor(Math.random() * 3)];
     return res;
-	};
-	
-	// postsData.sort(() => { // filter >> state
-	// 	if (filter === hot) {
-	// 		hotSort
-	// 	} else if(filter === time){
-	// 		timeSort
-	// 	}
-	// })
+  };
+
+  const sortedPostsData = [...postsData];
+
+  sortedPostsData.sort((a, b) => {
+    if (postsSort === "最新") {
+      return b.postTime.seconds - a.postTime.seconds;
+    } else if (postsSort === "熱門") {
+      return (
+        b.emotion.like.length +
+        b.emotion.angry.length +
+        b.emotion.happy.length -
+        (a.emotion.like.length + a.emotion.angry.length + a.emotion.happy.length)
+      );
+    }
+    return sortedPostsData;
+  });
 
   return (
     <StyledBody>
       <StyledBodyContainer>
-        <SideBar kanBansData={kanBansData} />
+        <SideBar kanBansData={kanBansData} setPostsSort={setPostsSort} />
         <StyledMain>
           <StyledMainContainer>
             <StyledMainHeader>
               <StyledSortDes>文章排序依</StyledSortDes>
               <StyledSortContainer>
-                <StyledSortSelector>熱門</StyledSortSelector>
+                <StyledSortSelector className='StyledSortSelector'>
+                  <DropDownMenu setPostsSort={setPostsSort} />
+                </StyledSortSelector>
                 <StyledFaCaretDownIconContainer>
                   <FontAwesomeIcon icon={faCaretDown} />
                 </StyledFaCaretDownIconContainer>
@@ -66,9 +78,31 @@ const ArticlesPage = () => {
             </StyledMainHeader>
             <StyledMobileMainHeader>
               <StyledMobileMainHeaderContainer>
-                <StyledMobileMainHeaderLink to='/'>熱門</StyledMobileMainHeaderLink>
-                <StyledMobileMainHeaderLink to='/'>最新</StyledMobileMainHeaderLink>
-                <StyledMobileMainHeaderLink to='/'>追蹤</StyledMobileMainHeaderLink>
+                <StyledMobileMainHeaderLink
+                  style={{
+                    color: isMenuItemClick === "熱門" ? "rgba(0, 0, 0, 0.75)" : " rgba(0, 0, 0, 0.35)",
+                    borderBottom: isMenuItemClick === "熱門" ? "3px solid rgb(51, 151, 207)" : "none",
+                  }}
+                  onClick={(e) => {
+                    isMenuItemClick === "熱門" ? setMenuItemClick("") : setMenuItemClick("熱門");
+
+                    setPostsSort(e.target.textContent);
+                  }}>
+                  熱門
+                </StyledMobileMainHeaderLink>
+                <StyledMobileMainHeaderLink
+                  style={{
+                    color: isMenuItemClick === "最新" ? "rgba(0, 0, 0, 0.75)" : " rgba(0, 0, 0, 0.35)",
+                    borderBottom: isMenuItemClick === "最新" ? "3px solid rgb(51, 151, 207)" : "none",
+                  }}
+                  onClick={(e) => {
+                    isMenuItemClick === "最新" ? setMenuItemClick("") : setMenuItemClick("最新");
+
+                    setPostsSort(e.target.textContent);
+                  }}>
+                  最新
+                </StyledMobileMainHeaderLink>
+                <StyledMobileMainHeaderLink cursor>追蹤</StyledMobileMainHeaderLink>
               </StyledMobileMainHeaderContainer>
             </StyledMobileMainHeader>
             <StyledBanner>
@@ -77,8 +111,8 @@ const ArticlesPage = () => {
               </StyledBannerContainer>
             </StyledBanner>
             <StyledMainBody>
-              {postsData &&
-                postsData
+              {sortedPostsData &&
+                sortedPostsData
                   .filter((art) => (kanBanName ? art.kanBan === kanBanName : true))
                   .map((art) => {
                     return (
@@ -96,7 +130,7 @@ const ArticlesPage = () => {
                               <StyledArticleKanBanAndNameContainer>
                                 <StyledGenderIconContainer>{renderGenderIcons()}</StyledGenderIconContainer>
                                 <StyledArticleSelectedKanBan>{art.kanBan}．</StyledArticleSelectedKanBan>
-                                <StyledArticleOwner>{art.name}</StyledArticleOwner>
+                                <StyledArticleOwner className='StyledArticleOwner	'>{art.name}</StyledArticleOwner>
                               </StyledArticleKanBanAndNameContainer>
                               <div>
                                 <StyledArticleTitle>{art.title}</StyledArticleTitle>
@@ -217,22 +251,7 @@ const StyledMobileMainHeaderLink = styled(Link)`
   color: rgba(0, 0, 0, 0.35);
   font-weight: 600;
   position: relative;
-  &:hover {
-    color: rgb(0, 0, 0);
-  }
-
-  :hover::after {
-    border-bottom: 3px solid rgb(51, 151, 207);
-  }
-
-  ::after {
-    content: "";
-    border-bottom: 3px solid transparent;
-    position: absolute;
-    left: 0px;
-    bottom: -1px;
-    width: 100%;
-  }
+  cursor: ${(props) => (props.cursor ? "not-allowed" : "pointer")};
 `;
 
 const StyledBanner = styled.div`
@@ -251,13 +270,14 @@ const StyledBannerImg = styled.img`
 
 const StyledSortDes = styled.div`
   padding: 0px 10px;
+  font-size: 14px;
 `;
 
 const StyledSortContainer = styled.div`
   display: flex;
-  padding: 6px;
   background-color: rgba(0, 16, 32, 0.06);
   border-radius: 8px;
+  padding: 2px;
 `;
 
 const StyledSortSelector = styled.div`
@@ -265,7 +285,9 @@ const StyledSortSelector = styled.div`
 `;
 
 const StyledFaCaretDownIconContainer = styled.div`
-  padding: 0px 4px;
+  display: flex;
+  align-items: center;
+  padding: 0px 4px 0 0;
 `;
 
 const StyledMainBody = styled.div`
@@ -292,6 +314,11 @@ const StyledArticleContainer = styled.div`
   padding: 20px 0px;
   cursor: pointer;
   flex-grow: 1;
+
+  @media screen and (max-width: 415px) {
+    margin: 0px 12px 0px 0px;
+    font-size: 14px;
+  }
 `;
 
 const StyledArticleTitle = styled.h2`
@@ -306,6 +333,8 @@ const StyledArticleKanBanAndNameContainer = styled.div`
 
 const StyledArticleOwner = styled.div`
   color: rgba(0, 0, 0, 0.5);
+  display: block;
+  margin-top: -2px;
 `;
 
 const StyledGenderIconContainer = styled.div`

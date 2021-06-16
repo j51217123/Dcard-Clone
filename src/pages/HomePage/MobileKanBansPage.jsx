@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListAlt, faFire, faStore, faGamepad } from "@fortawesome/free-solid-svg-icons";
 
 import { getKanBansData } from "../../utils/firebase";
-import CloseButtonIcon from "../../components/closeButtonIcon";
+import CloseButtonIcon from "../../components/icons/CloseButtonIcon";
 
 const MobileKanBansPage = (props) => {
   let { kanBanName } = useParams();
@@ -182,6 +182,10 @@ const StyledMobileKansPageLink = styled(Link)`
   height: 44px;
   color: rgba(0, 0, 0, 0.75);
   padding: 16px 16px;
+
+  :hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 `;
 
 const StyledMobileKansPageLogo = styled.div`
