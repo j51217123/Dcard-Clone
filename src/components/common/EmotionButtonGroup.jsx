@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
-import { handleUploadPostEmotionCount } from "../utils/firebase";
-import Like from "../images/like.png";
-import Happy from "../images/happy.png";
-import Angry from "../images/angry.png";
+import { handleUploadPostEmotionCount } from "../../utils/firebase";
+import Like from "../../images/like.png";
+import Happy from "../../images/happy.png";
+import Angry from "../../images/angry.png";
 
 const EmotionButtonGroup = (props) => {
-  const { setEmotionCount, postData, articleId, email } = props;
-  const [likeIsClick, setLikeIsClick] = useState("");
+  const { setEmotionCount, articleId, email } = props; // delete postData
 
   return (
     <StyledEmotionButtonContainer>
@@ -18,7 +17,7 @@ const EmotionButtonGroup = (props) => {
             setEmotionCount(emotionLen);
           });
         }}>
-        <StyledEmotionImg src={Like} alt='' />
+        <StyledEmotionImg src={Like} />
       </StyledEmotionButton>
       <StyledEmotionButton
         onClick={() => {
@@ -26,7 +25,7 @@ const EmotionButtonGroup = (props) => {
             setEmotionCount(emotionLen);
           });
         }}>
-        <StyledEmotionImg src={Happy} alt='' />
+        <StyledEmotionImg src={Happy} />
       </StyledEmotionButton>
       <StyledEmotionButton
         onClick={() => {
@@ -34,7 +33,7 @@ const EmotionButtonGroup = (props) => {
             setEmotionCount(emotionLen);
           });
         }}>
-        <StyledEmotionImg src={Angry} alt='' />
+        <StyledEmotionImg src={Angry} />
       </StyledEmotionButton>
     </StyledEmotionButtonContainer>
   );
@@ -65,6 +64,12 @@ const StyledEmotionImg = styled.img`
   border-radius: 50%;
   border: 2px solid rgb(255, 255, 255);
   box-sizing: content-box;
+
+  :hover {
+    width: 24px;
+    height: 24px;
+  }
+  /* ${(props) => (props.hover ? ":hover { width: 24px }" : "")} */
 `;
 
 export default EmotionButtonGroup;

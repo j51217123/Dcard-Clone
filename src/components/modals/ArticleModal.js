@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
-import ArticlePage from "../pages/article/ArticlePage";
+import ArticlePage from "../../pages/article/ArticlePage";
 
 function Modal() {
   const history = useHistory();
@@ -25,24 +25,10 @@ function Modal() {
       <StyledModal
         className='modal'
         style={{
-          // position: "absolute",
-          // background: "rgb(255, 255, 255)",
-          // top: "50%",
-          // left: "50%",
-          // right: "8%",
-          // padding: 15,
-          // border: "2px solid rgb(68, 68, 68)",
-          // maxWidth: "768px",
-          // width: "650px",
-          // minHeight: "100%",
-          // transform: "translate(-50%, -50%)",
           position: "absolute",
           background: "rgb(255, 255, 255)",
           top: "50%",
           left: "50%",
-          // right: "10%",
-          // padding: 15,
-          // border: "2px solid rgb(68, 68, 68)",
           maxWidth: "800px",
           minHeight: "100%",
           width: "65%",

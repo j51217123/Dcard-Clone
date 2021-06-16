@@ -78,7 +78,8 @@ const LoginPage = () => {
             </StyledLoginPassWordContainer>
             <StyledLoginButton
               onClick={(e) => {
-                loginMember(e, email, password, history);
+                e.preventDefault();
+                loginMember(email, password, history);
               }}>
               <StyledLoginButtonText>註冊 / 登入</StyledLoginButtonText>
             </StyledLoginButton>
