@@ -12,12 +12,13 @@ const EmotionButtonGroup = (props) => {
   return (
     <StyledEmotionButtonContainer>
       <StyledEmotionButton
+        aria-label='username'
         onClick={() => {
           handleUploadPostEmotionCount(articleId, email, "like").then((emotionLen) => {
             setEmotionCount(emotionLen);
           });
         }}>
-        <StyledEmotionImg src={Like} />
+        <StyledEmotionImg src={Like} alt='emotionLikeImg' />
       </StyledEmotionButton>
       <StyledEmotionButton
         onClick={() => {
@@ -25,7 +26,7 @@ const EmotionButtonGroup = (props) => {
             setEmotionCount(emotionLen);
           });
         }}>
-        <StyledEmotionImg src={Happy} />
+        <StyledEmotionImg src={Happy} alt='emotionHappyImg' />
       </StyledEmotionButton>
       <StyledEmotionButton
         onClick={() => {
@@ -33,7 +34,7 @@ const EmotionButtonGroup = (props) => {
             setEmotionCount(emotionLen);
           });
         }}>
-        <StyledEmotionImg src={Angry} />
+        <StyledEmotionImg src={Angry} alt='emotionAngryImg' />
       </StyledEmotionButton>
     </StyledEmotionButtonContainer>
   );
@@ -65,10 +66,10 @@ const StyledEmotionImg = styled.img`
   border: 2px solid rgb(255, 255, 255);
   box-sizing: content-box;
 
-  :hover {
+  /* :hover {
     width: 24px;
     height: 24px;
-  }
+  } */
   /* ${(props) => (props.hover ? ":hover { width: 24px }" : "")} */
 `;
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,15 +8,18 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { getPostsData, getKanBansData } from "../../utils/firebase";
 import { GirlIcon, BoyIcon, GenderDIcon } from "../../components/icons/GenderIcons";
 import { CommentIcon } from "../../components/icons/CommentIcons";
-import EmotionButtonGroup from "../../components/EmotionButtonGroup";
+import EmotionButtonGroup from "../../components/common/EmotionButtonGroup";
 import DropDownMenu from "../../components/common/DropDownMenu";
 import SideBar from "../homePage/SideBar";
 import BannerImg from "../../images/banner.png";
 
 const ArticlesPage = () => {
   let { kanBanName } = useParams();
+  const dispatch = useDispatch();
+  const testData = useSelector((state) => state.postsData);
+
   let location = useLocation();
-  const [postsData, setPostsData] = useState([]);
+  // const [postsData, setPostsData] = useState([]);
   const [kanBansData, setKanBansData] = useState("");
   const [postsSort, setPostsSort] = useState("");
   const [isMenuItemClick, setMenuItemClick] = useState("");
@@ -24,11 +28,13 @@ const ArticlesPage = () => {
     getPostsDataToHomePage();
     getKanBansDataToHomePage();
     renderGenderIcons();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getPostsDataToHomePage = async () => {
     const getFireStorePostsData = await getPostsData();
-    setPostsData(getFireStorePostsData);
+    // setPostsData(getFireStorePostsData);
+    dispatch({ type: "SET_POST_DATA", data: getFireStorePostsData });
   };
 
   const getKanBansDataToHomePage = async () => {
@@ -43,7 +49,7 @@ const ArticlesPage = () => {
     return res;
   };
 
-  const sortedPostsData = [...postsData];
+  const sortedPostsData = [...testData];
 
   sortedPostsData.sort((a, b) => {
     if (postsSort === "最新") {
