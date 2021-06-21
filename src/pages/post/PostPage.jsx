@@ -80,7 +80,7 @@ const PostPage = (props) => {
             <StyledFormTitleInput placeholder='標題' onChange={savePostTitleToState} />
             <StyledContentContainer>
               <StyledTextarea
-                placeholder='內容......'
+                placeholder='內容....'
                 rows='10'
                 cols='41'
                 onChange={savePostContentToState}></StyledTextarea>
