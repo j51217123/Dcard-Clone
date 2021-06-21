@@ -36,7 +36,7 @@ export default function DropDownMenu(props) {
 
   return (
     <StyledDropDownMenu>
-      <Button aria-controls='simple-menu' aria-haspopup='true' onClick={handleClick}>
+      <Button aria-label='button'  aria-controls='simple-menu' aria-haspopup='true' onClick={handleClick}>
         {buttonText}
       </Button>
       <Menu

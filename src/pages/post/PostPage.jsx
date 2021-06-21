@@ -28,7 +28,6 @@ const PostPage = (props) => {
     // getKanBansDataToPostPage();
     return () => {
       unsubscribe();
-      console.log("hi");
     };
   }, []);
 
