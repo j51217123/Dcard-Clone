@@ -11,6 +11,7 @@ jobs:
   build_and_preview:
     if: "${{ github.event.pull_request.head.repo.full_name == github.repository }}"
     runs-on: ubuntu-latest
+    env: CI:false
     steps:
       - uses: actions/checkout@v2
       - run: npm run test -- --watchAll=false& npm run build
