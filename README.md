@@ -23,15 +23,12 @@
 * CSS
 * JavaScript (ES2015)
 
-### Front-End Frameworks
+### Front-End Frameworks & Libraries
 
 * React
 * React Hooks
 * React Router
-
-### Front-End Libraries
-
-* Redux.js
+* Redux
 * Material-UI
 * animated-css
 
