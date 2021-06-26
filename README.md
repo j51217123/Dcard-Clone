@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+<!-- # Getting Started with Create React App -->
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p align="center">
+  <a href="https://ocard-15db3.web.app/">
+    <img src="./src/images/Ocard.svg" alt="Logo" width="200">
+  </a>
 
-## Available Scripts
+  <p align="center">
+   This is a social media website, platforms allow users to have conversations, share information and create web content.
+    <br />
+    <a href="https://ocard-15db3.web.app/"><strong>View Website »</strong></a>
+    <br />
+  </p> 
+</p>
 
-In the project directory, you can run:
 
-### `npm start`
+## Technologies
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Front-End Fundamental
 
-### `npm test`
+* HTML
+* CSS
+* JavaScript (ES2015)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Front-End Frameworks
 
-### `npm run build`
+* React
+* React Hooks
+* React Router
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Front-End Libraries
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+* Redux.js
+* Material-UI
+* animated-css
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Firebase Services
 
-### `npm run eject`
+* Authentication
+* Cloud Firestore
+* Cloud Storage
+* Cloud Function
+* Hosting
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Tool for Development
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+* Node Package Manager (NPM)
+* ESLint
+* Prettier
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Flow Chart
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+<img src="./src/readme/flow.jpg" width="700">
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Website Demo
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* Login as Resident by general account
 
-### Code Splitting
+<img src="./src/readme/login.gif" width="700">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+* Write a post and upload image
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<img src="./src/readme/post.gif" width="700">
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+* Browse the post and make comment, and
+you can click emotion button on posts or any comment
 
-### Advanced Configuration
+<img src="./src/readme/view.gif" width="700">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+* Selected kanban to browse, and posts can be sorted by popularity or by time
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+<img src="./src/readme/kanban.gif" width="700">
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Future Features
+
+* Use Virtualized List and lazy data-loading to enhance website performance
+
+* Integrate sign-in system with Facebook and Google
+
+* Search any post on website through the search feature
