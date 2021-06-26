@@ -10,13 +10,13 @@ import { GirlIcon, BoyIcon, GenderDIcon } from "../../components/icons/GenderIco
 import { CommentIcon } from "../../components/icons/CommentIcons";
 import EmotionButtonGroup from "../../components/common/EmotionButtonGroup";
 import DropDownMenu from "../../components/common/DropDownMenu";
-import SideBar from "../homePage/SideBar";
+import SideBar from "./SideBar";
 import BannerImg from "../../images/banner.png";
 
 const ArticlesPage = () => {
   let { kanBanName } = useParams();
   const dispatch = useDispatch();
-  const testData = useSelector((state) => state.postsData);
+  const postsData = useSelector((state) => state.postsData);
 
   let location = useLocation();
   // const [postsData, setPostsData] = useState([]);
@@ -28,7 +28,7 @@ const ArticlesPage = () => {
     getPostsDataToHomePage();
     getKanBansDataToHomePage();
     renderGenderIcons();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getPostsDataToHomePage = async () => {
@@ -49,7 +49,7 @@ const ArticlesPage = () => {
     return res;
   };
 
-  const sortedPostsData = [...testData];
+  const sortedPostsData = [...postsData];
 
   sortedPostsData.sort((a, b) => {
     if (postsSort === "最新") {
