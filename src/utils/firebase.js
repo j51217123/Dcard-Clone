@@ -54,14 +54,14 @@ const getSingleUserData = (postsDocData) => {
   const db = firebase.firestore();
   const singleUserRef = db.collection("Users");
   let usersDocData = [];
-  console.log(postsDocData);
+  // console.log(postsDocData);
   return singleUserRef
     .where("uid", "==", postsDocData.uid)
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((userDoc) => {
         // doc.data() is never undefined for query doc snapshots
-        console.log(userDoc.id, " => ", userDoc.data());
+        // console.log(userDoc.id, " => ", userDoc.data());
         usersDocData.push(userDoc.data());
       });
       return usersDocData[0];
@@ -116,9 +116,9 @@ const handleUpload = (e, image, title, content, uid, email, selectedKanBan, time
   const storage = firebase.storage();
   if (image) {
     e.preventDefault();
-    console.log(image);
+    // console.log(image);
     let uploadTask = storage.ref(`images/${image.name}`).put(image);
-    console.log(uploadTask);
+    // console.log(uploadTask);
     uploadTask.on(
       "state_changed",
       (snapshot) => {},
@@ -131,7 +131,7 @@ const handleUpload = (e, image, title, content, uid, email, selectedKanBan, time
           .child(image.name)
           .getDownloadURL()
           .then((url) => {
-            console.log(url);
+            // console.log(url);
             pushPost(title, content, uid, email, selectedKanBan, time, history, url);
           });
       }
@@ -343,7 +343,7 @@ const pushPost = (title, content, uid, email, selectKanBan, time, history, url =
 const pushComment = async (articleId, content, email, url = "") => {
   const db = firebase.firestore();
   const commentRef = db.collection("Posts").doc(articleId);
-  console.log(url);
+  // console.log(url);
 
   const existedComment = await getSinglePostData(articleId);
 

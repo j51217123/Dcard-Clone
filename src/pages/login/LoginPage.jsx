@@ -12,12 +12,12 @@ const LoginPage = () => {
 
   const getRegisterAndLoginEmail = (e) => {
     setEmail(e.target.value);
-    console.log(email);
+    // console.log(email);
   };
 
   const getRegisterAndLoginPassword = (e) => {
     setPassword(e.target.value);
-    console.log(password);
+    // console.log(password);
   };
 
   return (
