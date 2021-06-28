@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faListAlt, faFire, faStore, faGamepad } from "@fortawesome/free-solid-svg-icons";
+import { faListAlt } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = (props) => {
   const { kanBansData } = props;
@@ -14,24 +14,6 @@ const SideBar = (props) => {
             <FontAwesomeIcon icon={faListAlt} />
           </StyledSideBarLogo>
           <StyledSideBarLogoName>所有看板</StyledSideBarLogoName>
-        </StyledSideBarLink>
-        <StyledSideBarLink to='/'>
-          <StyledSideBarLogo>
-            <FontAwesomeIcon icon={faFire} />
-          </StyledSideBarLogo>
-          <StyledSideBarLogoName>即時熱門看板</StyledSideBarLogoName>
-        </StyledSideBarLink>
-        <StyledSideBarLink to='/'>
-          <StyledSideBarLogo>
-            <FontAwesomeIcon icon={faStore} />
-          </StyledSideBarLogo>
-          <StyledSideBarLogoName>好物研究室</StyledSideBarLogoName>
-        </StyledSideBarLink>
-        <StyledSideBarLink to='/'>
-          <StyledSideBarLogo>
-            <FontAwesomeIcon icon={faGamepad} />
-          </StyledSideBarLogo>
-          <StyledSideBarLogoName>遊戲專區</StyledSideBarLogoName>
         </StyledSideBarLink>
         <StyledSideBarSelectedKanBan>
           <StyledSideBarSelectedKanBanContainer>Dcard 精選看板</StyledSideBarSelectedKanBanContainer>

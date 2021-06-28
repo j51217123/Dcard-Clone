@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import styled from "styled-components";
 import { Animated } from "react-animated-css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faListAlt, faFire, faStore, faGamepad } from "@fortawesome/free-solid-svg-icons";
+import { faListAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { getKanBansData } from "../../utils/firebase";
 import CloseButtonIcon from "../../components/icons/CloseButtonIcon";
@@ -19,7 +19,7 @@ const MobileKanBansPage = (props) => {
 
   const getKanBansDataToHomePage = async () => {
     const getFireStoreKanBansData = await getKanBansData();
-    console.log(getFireStoreKanBansData);
+    // console.log(getFireStoreKanBansData);
     setKanBansData(getFireStoreKanBansData);
   };
 
@@ -50,24 +50,6 @@ const MobileKanBansPage = (props) => {
                     <FontAwesomeIcon icon={faListAlt} />
                   </StyledMobileKansPageLogo>
                   <StyledMobileKansPageLogoName>所有看板</StyledMobileKansPageLogoName>
-                </StyledMobileKansPageLink>
-                <StyledMobileKansPageLink to='/'>
-                  <StyledMobileKansPageLogo>
-                    <FontAwesomeIcon icon={faFire} className='icon' />
-                  </StyledMobileKansPageLogo>
-                  <StyledMobileKansPageLogoName>即時熱門看板</StyledMobileKansPageLogoName>
-                </StyledMobileKansPageLink>
-                <StyledMobileKansPageLink to='/'>
-                  <StyledMobileKansPageLogo>
-                    <FontAwesomeIcon icon={faStore} className='icon' />
-                  </StyledMobileKansPageLogo>
-                  <StyledMobileKansPageLogoName>好物研究室</StyledMobileKansPageLogoName>
-                </StyledMobileKansPageLink>
-                <StyledMobileKansPageLink to='/'>
-                  <StyledMobileKansPageLogo>
-                    <FontAwesomeIcon icon={faGamepad} className='icon' />
-                  </StyledMobileKansPageLogo>
-                  <StyledMobileKansPageLogoName>遊戲專區</StyledMobileKansPageLogoName>
                 </StyledMobileKansPageLink>
                 <StyledSpecialKanBan>
                   <StyledSpecialKanBanContainer>Dcard 精選看板</StyledSpecialKanBanContainer>

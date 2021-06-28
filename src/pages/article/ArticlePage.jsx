@@ -28,7 +28,7 @@ const ArticlePage = (props) => {
       });
     });
     getMemberInfo(({ email }) => {
-      console.log(email);
+      // console.log(email);
       setEmail(email);
     });
   }, [articleId]);
@@ -37,7 +37,7 @@ const ArticlePage = (props) => {
 
   const savePostContentToState = (e) => {
     setContent(e.target.value);
-    console.log(content);
+    // console.log(content);
   };
 
   const handleChange = (e) => {
@@ -45,7 +45,7 @@ const ArticlePage = (props) => {
       setImage(e.target.files[0]);
     }
     const objURL = URL.createObjectURL(e.target.files[0]);
-    console.log(objURL);
+    // console.log(objURL);
     setPreviewImgUrl(objURL);
   };
 

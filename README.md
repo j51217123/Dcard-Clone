@@ -51,7 +51,7 @@
 
 ## Flow Chart
 
-<img src="./src/readme/flow.jpg" width="700">
+<img src="./src/readme/flow.png" width="700">
 
 
 ## Website Demo
@@ -84,3 +84,10 @@ you can click emotion button on posts or any comment
 * Integrate sign-in system with Facebook and Google
 
 * Search any post on website through the search feature
+
+## Contact
+
+If you got any problem when using Ocard, or had any suggestion about it. Please feel free to contact with me via email.
+
+* Author: Ovis, Lai
+* Email:  j51217123@gmail.com
