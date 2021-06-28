@@ -41,12 +41,12 @@ export default function KanBansModal(props) {
 
   const getKanBansDataToPostPage = async () => {
     const getFireStoreKanBansData = await getKanBansData();
-    console.log(getFireStoreKanBansData);
+    // console.log(getFireStoreKanBansData);
     setKanBan(getFireStoreKanBansData);
   };
 
   const saveSelectKanBanToState = (e) => {
-    console.log(e.target.outerText);
+    // console.log(e.target.outerText);
     setSelectedKanBan(e.target.outerText);
     setSelectedModalKanBan(e.target.outerText);
   };
