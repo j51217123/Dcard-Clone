@@ -6,7 +6,7 @@
   </a>
 
   <p align="center">
-   This is a social media website, platforms allow users to have conversations, share information and create web content.
+   This is a social media website, platforms allow users to have conversations, share information and create web content, enjoy it.
     <br />
     <a href="https://ocard-15db3.web.app/"><strong>View Website »</strong></a>
     <br />
@@ -23,15 +23,12 @@
 * CSS
 * JavaScript (ES2015)
 
-### Front-End Frameworks
+### Front-End Frameworks & Libraries
 
 * React
 * React Hooks
 * React Router
-
-### Front-End Libraries
-
-* Redux.js
+* Redux
 * Material-UI
 * animated-css
 

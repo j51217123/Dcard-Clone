@@ -4,7 +4,7 @@ import "firebase/storage";
 import "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCk5xQsiVVNII41CIURiUvtnc5QY8qCFVc",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "ocard-15db3.firebaseapp.com",
   projectId: "ocard-15db3",
   storageBucket: "ocard-15db3.appspot.com",
@@ -25,7 +25,6 @@ const getSinglePostData = (articleId) => {
         console.log("Document data:", doc.data());
         return doc.data();
       } else {
-        // doc.data() will be undefined in this case
         console.log("No such document!");
       }
     })
@@ -40,11 +39,7 @@ const getPostsData = () => {
   let postsDocData = [];
   return postsRef.get().then((querySnapshot) => {
     querySnapshot.forEach((postsDoc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(postsDoc.id, " => ", postsDoc.data());
       postsDocData.push({ ...postsDoc.data(), articleId: postsDoc.id });
-      // console.log(postsDoc.id);  文章 ID
-      // console.log(postsDocData);
     });
     return postsDocData;
   });
@@ -54,7 +49,6 @@ const getSingleUserData = (postsDocData) => {
   const db = firebase.firestore();
   const singleUserRef = db.collection("Users");
   let usersDocData = [];
-  // console.log(postsDocData);
   return singleUserRef
     .where("uid", "==", postsDocData.uid)
     .get()
@@ -83,8 +77,6 @@ const getUsersData = (postsDocData) => {
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((userDoc) => {
-          // doc.data() is never undefined for query doc snapshots
-          // console.log(userDoc.id, " => ", userDoc.data());
           usersDocData.push(userDoc.data());
         });
         return usersDocData;
@@ -103,11 +95,8 @@ const getKanBansData = () => {
   let kanBansData = [];
   return kanBansRef.get().then((querySnapshot) => {
     querySnapshot.forEach((kanBansDoc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
       kanBansData.push(kanBansDoc.data());
     });
-    // console.log(kanBansData);
     return kanBansData;
   });
 };
@@ -116,9 +105,7 @@ const handleUpload = (e, image, title, content, uid, email, selectedKanBan, time
   const storage = firebase.storage();
   if (image) {
     e.preventDefault();
-    // console.log(image);
     let uploadTask = storage.ref(`images/${image.name}`).put(image);
-    // console.log(uploadTask);
     uploadTask.on(
       "state_changed",
       (snapshot) => {},
@@ -131,7 +118,6 @@ const handleUpload = (e, image, title, content, uid, email, selectedKanBan, time
           .child(image.name)
           .getDownloadURL()
           .then((url) => {
-            // console.log(url);
             pushPost(title, content, uid, email, selectedKanBan, time, history, url);
           });
       }
@@ -286,13 +272,13 @@ const handleUploadCommentEmotionCount = async (articleId, email, commentFloor) =
 
   const existedCommentLikes = postData.comment[commentFloor - 1].like;
 
-  const newCommentArr = [...postData.comment]; // 複製新的一個 comment array   **危險的淺拷貝
+  const newCommentArr = [...postData.comment];
 
   const isLikeEmails = existedCommentLikes.filter((mail) => {
-    return mail !== email; //  要確定 comment 的 like 有沒有這個 email
+    return mail !== email;
   });
 
-  newCommentArr[commentFloor - 1].like = existedCommentLikes.includes(email) ? isLikeEmails : [...isLikeEmails, email]; // 加新的email
+  newCommentArr[commentFloor - 1].like = existedCommentLikes.includes(email) ? isLikeEmails : [...isLikeEmails, email];
 
   return postRef
     .update({
@@ -343,7 +329,6 @@ const pushPost = (title, content, uid, email, selectKanBan, time, history, url =
 const pushComment = async (articleId, content, email, url = "") => {
   const db = firebase.firestore();
   const commentRef = db.collection("Posts").doc(articleId);
-  // console.log(url);
 
   const existedComment = await getSinglePostData(articleId);
 
@@ -392,7 +377,6 @@ const registerMember = (email, password, history) => {
     .createUserWithEmailAndPassword(email, password)
     .then((result) => {
       console.log(result.user, "result.user");
-      // getMemberInfo(result.user);
       history.push("/");
     })
     .catch(function (error) {
@@ -430,7 +414,6 @@ const logoutMember = (e) => {
     .auth()
     .signOut()
     .then(function () {
-      // 登出後強制重整一次頁面
       window.location.reload();
     })
     .catch(function (error) {

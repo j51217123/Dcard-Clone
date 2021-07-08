@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 
-import { handleUpload, getMemberInfo } from "../../utils/firebase"; // delete getKanBansData
+import { handleUpload, getMemberInfo } from "../../utils/firebase";
 import { GenderDIcon } from "../../components/icons/GenderIcons";
 import UploadImgIcon from "../../components/icons/UploadImgIcon";
 import KanBansModal from "../../components/modals/KanBansModal";
@@ -17,7 +17,6 @@ const PostPage = (props) => {
   const [previewImgUrl, setPreviewImgUrl] = useState("");
   const [email, setEmail] = useState("");
   const [uid, setUid] = useState("");
-  // const [kanBans, setKanBan] = useState("");
   const [selectedKanBan, setSelectedKanBan] = useState("");
 
   useEffect(() => {
@@ -25,21 +24,13 @@ const PostPage = (props) => {
       setEmail(email);
       setUid(uid);
     });
-    // getKanBansDataToPostPage();
     return () => {
       unsubscribe();
     };
   }, []);
 
-  // const getKanBansDataToPostPage = async () => {
-  //   const getFireStoreKanBansData = await getKanBansData();
-  //   console.log(getFireStoreKanBansData);
-  //   setKanBan(getFireStoreKanBansData);
-  // };
-
   const savePostContentToState = (e) => {
     setContent(e.target.value);
-    // console.log(content);
   };
 
   const savePostTitleToState = (e) => {
@@ -51,7 +42,6 @@ const PostPage = (props) => {
       setImage(e.target.files[0]);
     }
     const objURL = URL.createObjectURL(e.target.files[0]);
-    // console.log(objURL);
     setPreviewImgUrl(objURL);
   };
 
