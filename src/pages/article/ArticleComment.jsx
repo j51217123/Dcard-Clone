@@ -8,7 +8,6 @@ import { handleUploadCommentEmotionCount } from "../../utils/firebase";
 
 const ArticleComment = (props) => {
   const { comment, articleId, email } = props;
-  // const [selectedFloor, setSelectedFloor] = useState(comment.floor);
   const [commentLikeCount, setCommentLikeCount] = useState(comment.like.length);
   const [commentLikeIsClick, setCommentLikeIsClick] = useState(comment.like.includes(email) ? "like" : "");
 

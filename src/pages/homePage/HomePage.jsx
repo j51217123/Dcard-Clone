@@ -19,7 +19,6 @@ const ArticlesPage = () => {
   const postsData = useSelector((state) => state.postsData);
 
   let location = useLocation();
-  // const [postsData, setPostsData] = useState([]);
   const [kanBansData, setKanBansData] = useState("");
   const [postsSort, setPostsSort] = useState("");
   const [isMenuItemClick, setMenuItemClick] = useState("");
@@ -33,13 +32,11 @@ const ArticlesPage = () => {
 
   const getPostsDataToHomePage = async () => {
     const getFireStorePostsData = await getPostsData();
-    // setPostsData(getFireStorePostsData);
     dispatch({ type: "SET_POST_DATA", data: getFireStorePostsData });
   };
 
   const getKanBansDataToHomePage = async () => {
     const getFireStoreKanBansData = await getKanBansData();
-    // console.log(getFireStoreKanBansData);
     setKanBansData(getFireStoreKanBansData);
   };
 
@@ -91,7 +88,6 @@ const ArticlesPage = () => {
                   }}
                   onClick={(e) => {
                     isMenuItemClick === "熱門" ? setMenuItemClick("") : setMenuItemClick("熱門");
-
                     setPostsSort(e.target.textContent);
                   }}>
                   熱門
@@ -103,7 +99,6 @@ const ArticlesPage = () => {
                   }}
                   onClick={(e) => {
                     isMenuItemClick === "最新" ? setMenuItemClick("") : setMenuItemClick("最新");
-
                     setPostsSort(e.target.textContent);
                   }}>
                   最新

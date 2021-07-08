@@ -19,7 +19,6 @@ const MobileKanBansPage = (props) => {
 
   const getKanBansDataToHomePage = async () => {
     const getFireStoreKanBansData = await getKanBansData();
-    // console.log(getFireStoreKanBansData);
     setKanBansData(getFireStoreKanBansData);
   };
 

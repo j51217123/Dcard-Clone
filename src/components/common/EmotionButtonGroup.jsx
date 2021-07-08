@@ -66,10 +66,10 @@ const StyledEmotionImg = styled.img`
   border: 2px solid rgb(255, 255, 255);
   box-sizing: content-box;
 
-  /* :hover {
+  :hover {
     width: 24px;
     height: 24px;
-  } */
+  }
   /* ${(props) => (props.hover ? ":hover { width: 24px }" : "")} */
 `;
 
