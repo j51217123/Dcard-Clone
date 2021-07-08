@@ -1,5 +1,5 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyCk5xQsiVVNII41CIURiUvtnc5QY8qCFVc",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "ocard-15db3.firebaseapp.com",
   projectId: "ocard-15db3",
   storageBucket: "ocard-15db3.appspot.com",
