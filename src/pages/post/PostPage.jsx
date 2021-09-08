@@ -63,8 +63,8 @@ const PostPage = (props) => {
             <StyledFormOwnerInfoContainer>
               <StyledGenderIconContainer>{<GenderDIcon />}</StyledGenderIconContainer>
               <StyledOwnerNameAndPostTimeContainer>
-                <div>{email}</div>
-                <div>{time}</div>
+                <StyledEmailDiv>{email}</StyledEmailDiv>
+                <StyledTimeDiv>{time}</StyledTimeDiv>
               </StyledOwnerNameAndPostTimeContainer>
             </StyledFormOwnerInfoContainer>
             <StyledFormTitleInput placeholder='標題' onChange={savePostTitleToState} />
@@ -192,6 +192,21 @@ const StyledFormBody = styled.div`
 
 const StyledFormOwnerInfoContainer = styled.div`
   display: flex;
+`;
+
+const StyledTimeDiv = styled.div`
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  color: rgba(0, 0, 0, 0.35);
+`;
+
+const StyledEmailDiv = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  color: rgba(0, 0, 0, 0.75);
+  margin-left: 2px;
 `;
 
 const StyledGenderIconContainer = styled.div`
