@@ -156,7 +156,13 @@ const ArticlePage = (props) => {
                   disabled={content.length === 0 ? "disabled" : ""}
                   onClick={(e) => {
                     handlePostComment(e, image, articleId, content, email).then((c) => {
-                      if (postData.comment) {
+                      if (email === "") {
+                        console.log(postData, "This is postData");
+                        console.log(c, "This is C");
+                        alert("請先進行登入動作，謝謝！");
+                        setContent("");
+                        setPreviewImgUrl("");
+                      } else if (postData.comment) {
                         setPostData({ ...postData, comment: [...postData.comment, c] });
                         setContent("");
                         setPreviewImgUrl("");
