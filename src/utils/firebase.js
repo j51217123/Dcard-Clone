@@ -22,7 +22,7 @@ const getSinglePostData = (articleId) => {
     .get()
     .then((doc) => {
       if (doc.exists) {
-        console.log("Document data:", doc.data());
+        // console.log("Document data:", doc.data());
         return doc.data();
       } else {
         console.log("No such document!");
@@ -130,7 +130,7 @@ const handleUpload = (e, image, title, content, uid, email, selectedKanBan, time
 
 const handlePostComment = (e, image, articleId, content, email) => {
   const storage = firebase.storage();
-  if (image) {
+  if (image && email !== "") {
     e.preventDefault();
     console.log(image);
     return storage
@@ -148,11 +148,14 @@ const handlePostComment = (e, image, articleId, content, email) => {
             });
           });
       });
-  } else {
+  } else if (email !== "") {
     e.preventDefault();
     return pushComment(articleId, content, email).then((comment) => {
       return comment;
     });
+  } else {
+    e.preventDefault();
+    return getSinglePostData();
   }
 };
 
