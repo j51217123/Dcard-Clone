@@ -420,6 +420,25 @@ const facebookMemberLogin = (history) => {
     });
 };
 
+const googleMemberLogin = (history) => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase
+    .auth()
+    .signInWithPopup(provider)
+    .then((result) => {
+      var credential = result.credential;
+      var token = credential.accessToken;
+      var user = result.user;
+      history.push("/");
+    })
+    .catch((error) => {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;
+      var credential = error.credential;
+    });
+};
+
 const loginMember = (email, password, history) => {
   firebase
     .auth()
@@ -490,6 +509,7 @@ export {
   pushPost,
   registerMember,
   facebookMemberLogin,
+  googleMemberLogin,
   loginMember,
   logoutMember,
   getMemberInfo,

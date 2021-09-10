@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 
 import LazyImg from "../../images/lazy.svg";
-import { loginMember, facebookMemberLogin } from "../../utils/firebase";
+import { loginMember, facebookMemberLogin, googleMemberLogin } from "../../utils/firebase";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -48,7 +48,11 @@ const LoginPage = () => {
               </StyledFacebookButtonContainer>
             </StyledFacebookLoginButton>
             <StyledGoogleLoginButton>
-              <StyledGoogleLoginButtonContainer>
+              <StyledGoogleLoginButtonContainer
+                onClick={(e) => {
+                  e.preventDefault();
+                  googleMemberLogin(history);
+                }}>
                 <img src='' alt='' />
                 Google 註冊 / 登入
               </StyledGoogleLoginButtonContainer>
