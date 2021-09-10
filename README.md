@@ -74,11 +74,22 @@ you can click emotion button on posts or any comment
 <img src="./src/readme/kanban.gif" width="700">
 
 
+## [0.0.1] - 2021-09-10
+
+### Added
+
+* Integrate sign-in system with Facebook and Google
+
+### Changed
+
+* Fix comment verification, if you want make comment, you must login member first
+
+
 ## Future Features
 
 * Use Virtualized List and lazy data-loading to enhance website performance
 
-* Integrate sign-in system with Facebook and Google
+* ~~Integrate sign-in system with Facebook and Google (Done)~~
 
 * Search any post on website through the search feature
 
