@@ -62,6 +62,10 @@ const ArticlesPage = () => {
     return sortedPostsData;
   });
 
+  const setOpenHidden = () => {
+    document.body.style.overflow = "hidden";
+  };
+
   return (
     <StyledBody>
       <StyledBodyContainer>
@@ -71,7 +75,7 @@ const ArticlesPage = () => {
             <StyledMainHeader>
               <StyledSortDes>文章排序依</StyledSortDes>
               <StyledSortContainer>
-                <StyledSortSelector className='StyledSortSelector'>
+                <StyledSortSelector className="StyledSortSelector">
                   <DropDownMenu setPostsSort={setPostsSort} />
                 </StyledSortSelector>
                 <StyledFaCaretDownIconContainer>
@@ -125,13 +129,14 @@ const ArticlesPage = () => {
                             // the `background` in location state.
                             state: { background: location },
                           }}
-                          className='Link'>
+                          onClick={setOpenHidden}
+                          className="Link">
                           <StyledMainBodyContainer>
                             <StyledArticleContainer>
                               <StyledArticleKanBanAndNameContainer>
                                 <StyledGenderIconContainer>{renderGenderIcons()}</StyledGenderIconContainer>
                                 <StyledArticleSelectedKanBan>{art.kanBan}．</StyledArticleSelectedKanBan>
-                                <StyledArticleOwner className='StyledArticleOwner	'>{art.name}</StyledArticleOwner>
+                                <StyledArticleOwner className="StyledArticleOwner	">{art.name}</StyledArticleOwner>
                               </StyledArticleKanBanAndNameContainer>
                               <div>
                                 <StyledArticleTitle>{art.title}</StyledArticleTitle>
@@ -159,9 +164,9 @@ const ArticlesPage = () => {
                             <StyledPreviewImgContainer>
                               <StyledPreviewImg
                                 src={art.audio}
-                                alt=''
-                                width='84px'
-                                height='84px'
+                                alt=""
+                                width="84px"
+                                height="84px"
                                 style={{ display: art.audio ? "flex" : "none" }}
                               />
                             </StyledPreviewImgContainer>
