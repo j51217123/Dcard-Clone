@@ -7,9 +7,14 @@ import ArticlePage from "../../pages/article/ArticlePage";
 function Modal() {
   const history = useHistory();
 
+  const setCloseHidden = () => {
+    document.body.style.overflow = "scroll";
+  };
+
   const modalClose = (e) => {
     e.stopPropagation();
     history.goBack();
+    setCloseHidden();
   };
 
   return (
@@ -23,7 +28,7 @@ function Modal() {
         background: "rgba(0, 0, 0, 0.15)",
       }}>
       <StyledModal
-        className='modal'
+        className="modal"
         style={{
           position: "absolute",
           background: "rgb(255, 255, 255)",
