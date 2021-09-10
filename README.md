@@ -83,6 +83,7 @@ you can click emotion button on posts or any comment
 ### Changed
 
 * Fix comment verification, if you want make comment, you must login member first
+* Disabled background body scroll when article modal is showing
 
 
 ## Future Features
