@@ -8,7 +8,7 @@ function Modal() {
   const history = useHistory();
 
   const setCloseHidden = () => {
-    document.body.style.overflow = "scroll";
+    document.body.style.overflow = "auto";
   };
 
   const modalClose = (e) => {
