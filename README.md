@@ -13,90 +13,88 @@
   </p> 
 </p>
 
-
 ## Technologies
-
 
 ### Front-End Fundamental
 
-* HTML
-* CSS
-* JavaScript (ES2015)
+- HTML
+- CSS
+- JavaScript (ES2015)
 
 ### Front-End Frameworks & Libraries
 
-* React
-* React Hooks
-* React Router
-* Redux
-* Material-UI
-* animated-css
+- React
+- React Hooks
+- React Router
+- Redux
+- Material-UI
+- animated-css
 
 ### Firebase Services
 
-* Authentication
-* Cloud Firestore
-* Cloud Storage
-* Cloud Function
-* Hosting
+- Authentication
+- Cloud Firestore
+- Cloud Storage
+- Cloud Function
+- Hosting
 
 ### Tool for Development
 
-* Node Package Manager (NPM)
-* ESLint
-* Prettier
+- Node Package Manager (NPM)
+- ESLint
+- Prettier
 
 ## Flow Chart
 
 <img src="./src/readme/flow.png" width="700">
 
-
 ## Website Demo
 
-* Login as Resident by general account
+- Login as Resident by general account
 
 <img src="./src/readme/login.gif" width="700">
 
-
-* Write a post and upload image
+- Write a post and upload image
 
 <img src="./src/readme/post.gif" width="700">
 
-
-* Browse the post and make comment, and
-you can click emotion button on posts or any comment
+- Browse the post and make comment, and
+  you can click emotion button on posts or any comment
 
 <img src="./src/readme/view.gif" width="700">
 
-
-* Selected kanban to browse, and posts can be sorted by popularity or by time
+- Selected kanban to browse, and posts can be sorted by popularity or by time
 
 <img src="./src/readme/kanban.gif" width="700">
 
+## [0.0.2] - 2021-09-20
+
+### Added
+
+- Add search feature
 
 ## [0.0.1] - 2021-09-10
 
 ### Added
 
-* Integrate sign-in system with Facebook and Google
+- Integrate sign-in system with Facebook and Google
 
 ### Changed
 
-* Fix comment verification, if you want make comment, you must login member first
-* Disabled background body scroll when article modal is showing
-
+- Fix comment verification, if you want make comment, you must login member first
+- Disabled background body scroll when article modal is showing
 
 ## Future Features
 
-* Use Virtualized List and lazy data-loading to enhance website performance
+- Use Virtualized List and lazy data-loading to enhance website performance
 
-* ~~Integrate sign-in system with Facebook and Google (Done)~~
+- ~~Integrate sign-in system with Facebook and Google (Done)~~
 
-* Search any post on website through the search feature
+- ~~Search any post on website through the search feature (Done)~~
 
 ## Contact
 
 If you got any problem when using Ocard, or had any suggestion about it. Please feel free to contact with me via email.
 
-* Author: Ovis, Lai
-* Email:  j51217123@gmail.com
+- Author: Ovis, Lai
+- Email: j51217123@gmail.com
