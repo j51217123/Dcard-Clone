@@ -1,19 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+
+import { getPostsData } from "../../utils/firebase";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListAlt } from "@fortawesome/free-solid-svg-icons";
 
 const SideBar = (props) => {
   const { kanBansData } = props;
+  const dispatch = useDispatch();
+
+  const getAllPostsData = async () => {
+    const getFireStorePostsData = await getPostsData();
+    dispatch({ type: "SET_POST_DATA", data: getFireStorePostsData });
+  };
+
   return (
-    <StyledSideBar>
+    <StyledSideBar className="StyledSideBar">
       <StyledSideBarContainer>
-        <StyledSideBarLink to='/'>
+        <StyledSideBarLink to="/">
           <StyledSideBarLogo>
             <FontAwesomeIcon icon={faListAlt} />
           </StyledSideBarLogo>
-          <StyledSideBarLogoName>所有看板</StyledSideBarLogoName>
+          <StyledSideBarLogoName onClick={getAllPostsData}>所有看板</StyledSideBarLogoName>
         </StyledSideBarLink>
         <StyledSideBarSelectedKanBan>
           <StyledSideBarSelectedKanBanContainer>Dcard 精選看板</StyledSideBarSelectedKanBanContainer>
@@ -36,6 +46,7 @@ const SideBar = (props) => {
 
 const StyledSideBar = styled.div`
   width: 188px;
+  height: 100vh;
 
   @media screen and (max-width: 1024px) {
     display: none;

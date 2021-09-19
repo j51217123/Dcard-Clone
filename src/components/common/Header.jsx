@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,13 +7,16 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 import OcardImg from "../../images/Ocard.svg";
 import { HamMenuIcon } from "../icons/NavigationIcons";
-import { getMemberInfo } from "../../utils/firebase";
+import { getPostsData, getMemberInfo } from "../../utils/firebase";
 import NavigationIconGroup from "../common/NavigationIconGroup";
 import MobileKanBansPage from "../../pages/homePage/MobileKanBansPage";
 
 const Header = () => {
   const [memberInfo, setMemberInfo] = useState(null);
+  const [searchInfo, setSearchInfo] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const postsData = useSelector((state) => state.postsData);
 
   useEffect(() => {
     const unsubscribe = getMemberInfoToHeader();
@@ -27,10 +31,32 @@ const Header = () => {
     });
   };
 
+  const getSearchValue = (e) => {
+    setSearchInfo(e.target.value);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+      setSearchInfo("");
+    }
+  };
+
+  const handleSearch = () => {
+    const searchResult = postsData.filter((postData) => postData.title.includes(searchInfo));
+    dispatch({ type: "SET_POST_DATA", data: searchResult });
+    setSearchInfo("");
+  };
+
+  const getAllPostsData = async () => {
+    const getFireStorePostsData = await getPostsData();
+    dispatch({ type: "SET_POST_DATA", data: getFireStorePostsData });
+  };
+
   return (
     <StyledHeader>
       {isOpen ? <MobileKanBansPage setIsOpen={setIsOpen} /> : ""}
-      <StyledHeaderContainer className='StyledHeaderContainer'>
+      <StyledHeaderContainer className="StyledHeaderContainer">
         <StyledHamMenuContainer
           onClick={() => {
             setIsOpen(true);
@@ -39,14 +65,20 @@ const Header = () => {
         </StyledHamMenuContainer>
         <StyledLogoAndSearchBar>
           <StyledLogoContainer>
-            <StyledLogoLink to='/'>
-              <StyledLogoImg src={OcardImg} alt='Ocard' />
+            <StyledLogoLink to="/" onClick={getAllPostsData}>
+              <StyledLogoImg src={OcardImg} alt="Ocard" />
             </StyledLogoLink>
           </StyledLogoContainer>
           <StyledSearchBar>
             <StyledSearchBarContainer>
-              <StyledSearchBarInput type='text' placeholder='搜尋' />
-              <StyledSearchBarButton>
+              <StyledSearchBarInput
+                type="text"
+                placeholder="搜尋"
+                value={searchInfo}
+                onChange={getSearchValue}
+                onKeyDown={handleKeyPress}
+              />
+              <StyledSearchBarButton onClick={handleSearch}>
                 <FontAwesomeIcon icon={faSearch} />
               </StyledSearchBarButton>
             </StyledSearchBarContainer>
@@ -56,7 +88,7 @@ const Header = () => {
           <NavigationIconGroup />
         ) : (
           <StyledLoginContainer>
-            <StyledLoginLink to='/login'>
+            <StyledLoginLink to="/login">
               <StyledLoginSpan>註冊 / 登入</StyledLoginSpan>
             </StyledLoginLink>
           </StyledLoginContainer>
