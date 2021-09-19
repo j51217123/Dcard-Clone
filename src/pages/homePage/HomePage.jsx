@@ -68,7 +68,7 @@ const ArticlesPage = () => {
 
   return (
     <StyledBody>
-      <StyledBodyContainer>
+      <StyledBodyContainer className="StyledBodyContainer">
         <SideBar kanBansData={kanBansData} setPostsSort={setPostsSort} />
         <StyledMain>
           <StyledMainContainer>

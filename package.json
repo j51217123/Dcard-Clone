@@ -15,7 +15,7 @@
     "animate.css": "^4.1.1",
     "firebase": "^8.6.1",
     "moment": "^2.29.1",
-    "node-sass": "^6.0.0",
+    "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-animated-css": "^1.2.1",
     "react-burger-menu": "^3.0.6",
