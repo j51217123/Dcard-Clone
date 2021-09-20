@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 
 import LazyImg from "../../images/lazy.svg";
+import facebookLogin from "../../images/facebookLogin.svg";
+import googleLogin from "../../images/googleLogin.svg";
 import { loginMember, facebookMemberLogin, googleMemberLogin } from "../../utils/firebase";
 
 const LoginPage = () => {
@@ -22,14 +24,14 @@ const LoginPage = () => {
     <StyledMain>
       <StyledMainContainer>
         <StyledLazyContainer>
-          <StyledLazyImg src={LazyImg} alt='' />
+          <StyledLazyImg src={LazyImg} alt="" />
           <StyledLazyTitle>年輕人都在 Dcard 上討論</StyledLazyTitle>
           <StyledLazyInfo>
             不想錯過任何有趣的話題嗎？
             <br />
             趕快加入我們吧！
           </StyledLazyInfo>
-          <StyledLazyLink to='/'>
+          <StyledLazyLink to="/">
             <StyledLazyButton>
               <StyledLazyDescription>先看討論區</StyledLazyDescription>
             </StyledLazyButton>
@@ -38,34 +40,34 @@ const LoginPage = () => {
         <StyledLoginFormContainer>
           <StyledLoginButtonGroup>
             <StyledFacebookLoginButton>
+              <StyledFacebookLoginImg src={facebookLogin} alt="" />
               <StyledFacebookButtonContainer
                 onClick={(e) => {
                   e.preventDefault();
                   facebookMemberLogin(history);
                 }}>
-                <img src='' alt='' />
                 Facebook 註冊 / 登入
               </StyledFacebookButtonContainer>
             </StyledFacebookLoginButton>
             <StyledGoogleLoginButton>
+              <StyledGoogleLoginImg src={googleLogin} alt="" />
               <StyledGoogleLoginButtonContainer
                 onClick={(e) => {
                   e.preventDefault();
                   googleMemberLogin(history);
                 }}>
-                <img src='' alt='' />
                 Google 註冊 / 登入
               </StyledGoogleLoginButtonContainer>
             </StyledGoogleLoginButton>
           </StyledLoginButtonGroup>
           <StyledDemarcation>或</StyledDemarcation>
-          <StyledLoginForm action=''>
+          <StyledLoginForm action="">
             <StyledLoginEmail>
               <StyledLoginEmailContainer>
                 <StyledLoginLabel>常用信箱</StyledLoginLabel>
                 <StyledLoginInput
-                  placeholder='輸入信箱 / aaa@test.com'
-                  type='email'
+                  placeholder="輸入信箱 / aaa@test.com"
+                  type="email"
                   onChange={(e) => {
                     getRegisterAndLoginEmail(e);
                   }}></StyledLoginInput>
@@ -75,8 +77,8 @@ const LoginPage = () => {
               <StyledLoginLabel>密碼</StyledLoginLabel>
               <div>
                 <StyledLoginInput
-                  placeholder='輸入密碼 / 123456'
-                  type='password'
+                  placeholder="輸入密碼 / 123456"
+                  type="password"
                   onChange={(e) => {
                     getRegisterAndLoginPassword(e);
                   }}></StyledLoginInput>
@@ -192,6 +194,9 @@ const StyledLoginButtonGroup = styled.div`
 `;
 
 const StyledFacebookLoginButton = styled.button`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   transform: translateX(-2px);
   width: calc(100% + 4px);
   background: rgb(66, 95, 156);
@@ -200,13 +205,12 @@ const StyledFacebookLoginButton = styled.button`
   border-radius: 10px;
   border: 1px solid transparent;
   padding: 0px 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
 `;
 
 const StyledFacebookButtonContainer = styled.div`
+  display: flex;
+  margin: 0 auto;
   text-align: center;
   background: rgb(66, 95, 156);
   color: rgb(255, 255, 255);
@@ -219,7 +223,17 @@ const StyledFacebookButtonContainer = styled.div`
   cursor: pointer;
 `;
 
+const StyledFacebookLoginImg = styled.img`
+  display: flex;
+  width: 18px;
+  height: 18px;
+  object-fit: cover;
+`;
+
 const StyledGoogleLoginButton = styled.button`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   transform: translateX(-2px);
   width: calc(100% + 4px);
   color: rgb(0, 0, 0);
@@ -228,14 +242,20 @@ const StyledGoogleLoginButton = styled.button`
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.15);
   padding: 0px 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
   margin-top: 20px;
 `;
 
+const StyledGoogleLoginImg = styled.img`
+  display: flex;
+  width: 18px;
+  height: 18px;
+  object-fit: cover;
+`;
+
 const StyledGoogleLoginButtonContainer = styled.div`
+  display: flex;
+  margin: 0 auto;
   text-align: center;
   padding: 12px;
   font-weight: 400;
